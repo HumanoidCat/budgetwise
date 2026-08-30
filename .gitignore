@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.db
+
+# Node / Expo
+node_modules/
+.expo/
+dist/
+web-build/
+*.tgz
+
+# Entornos y secretos
+.env
+.env.*
+!.env.example
+
+# SO / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Builds móviles
+*.apk
+*.aab
+*.ipa
