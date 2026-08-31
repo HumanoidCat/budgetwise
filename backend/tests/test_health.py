@@ -8,8 +8,9 @@ def test_health_ok(client):
 
 def test_modules_registered(client):
     """Todos los módulos del monolito responden (placeholders del Sprint 0)."""
-    for module in ["categories", "transactions", "goals", "budgets", "ai"]:
+    for module in ["categories", "transactions", "goals", "ai"]:
         resp = client.get(f"/{module}/ping")
         assert resp.status_code == 200, f"módulo {module} no registrado"
-    # auth ya está implementado (HU-01/02): responde 401 sin token, no 404
+    # módulos ya implementados: responden 401 sin token, no 404
     assert client.get("/auth/me").status_code == 401
+    assert client.get("/budgets/status").status_code == 401
