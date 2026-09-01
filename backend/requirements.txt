@@ -10,6 +10,7 @@ python-jose[cryptography]>=3.3
 passlib[bcrypt]>=1.7
 bcrypt<4.1
 python-multipart>=0.0.9
+prometheus-client>=0.20
 
 # dev / calidad
 pytest>=8.2

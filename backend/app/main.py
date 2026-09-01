@@ -1,22 +1,14 @@
-import logging
-import time
-import uuid
-
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
+from app.core.observability import setup_observability
 from app.modules.ai.router import router as ai_router
 from app.modules.auth.router import router as auth_router
 from app.modules.budgets.router import router as budgets_router
 from app.modules.categories.router import router as categories_router
 from app.modules.goals.router import router as goals_router
 from app.modules.transactions.router import router as transactions_router
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='{"time":"%(asctime)s","level":"%(levelname)s","logger":"%(name)s","msg":"%(message)s"}',
-)
-logger = logging.getLogger("budgetwise")
 
 app = FastAPI(
     title="BudgetWise API",
@@ -31,30 +23,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.middleware("http")
-async def request_id_and_timing(request: Request, call_next):
-    """Observabilidad básica: request-id + latencia en cada log (HU-16 la amplía)."""
-    request_id = str(uuid.uuid4())[:8]
-    start = time.perf_counter()
-    response = await call_next(request)
-    elapsed_ms = (time.perf_counter() - start) * 1000
-    logger.info(
-        "request_id=%s method=%s path=%s status=%s elapsed_ms=%.1f",
-        request_id, request.method, request.url.path, response.status_code, elapsed_ms,
-    )
-    response.headers["X-Request-ID"] = request_id
-    return response
-
+# HU-16: logs JSON con request-id, métricas Prometheus (/metrics), /health con chequeo de BD
+# y manejo de excepciones no controladas. Ver app/core/observability.py y docs/observability.md.
+setup_observability(app)
 
 # El esquema de la BD lo gestiona Alembic (S0-6): el contenedor ejecuta
 # `alembic upgrade head` antes de arrancar uvicorn (ver backend/Dockerfile).
 # En pruebas, tests/conftest.py crea las tablas con Base.metadata.create_all.
 
 
-@app.get("/health", tags=["observabilidad"])
-def health() -> dict:
-    return {"status": "ok", "service": "budgetwise-api"}
+@app.get("/", include_in_schema=False)
+def root() -> RedirectResponse:
+    """La raíz redirige a la documentación interactiva."""
+    return RedirectResponse(url="/docs")
 
 
 app.include_router(auth_router)

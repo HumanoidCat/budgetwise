@@ -1,3 +1,6 @@
+# Nombre del proyecto: así Docker Desktop agrupa los contenedores como "budgetwise".
+name: budgetwise
+
 services:
   db:
     image: postgres:16-alpine
@@ -6,7 +9,7 @@ services:
       POSTGRES_PASSWORD: budgetwise
       POSTGRES_DB: budgetwise
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5433}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -18,16 +21,49 @@ services:
   api:
     build: ./backend
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false   # opcional: las variables de abajo bastan para desarrollo
     environment:
       DATABASE_URL: postgresql://budgetwise:budgetwise@db:5432/budgetwise
     ports:
-      - "8000:8000"
+      - "${API_PORT:-8001}:8000"
     depends_on:
       db:
         condition: service_healthy
     volumes:
       - ./backend:/app
 
+  # --- Observabilidad (HU-16) ---------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=7d
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./observability/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - promdata:/prometheus
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    depends_on:
+      - api
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafanadata:/var/lib/grafana
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    depends_on:
+      - prometheus
+
 volumes:
   pgdata:
+  promdata:
+  grafanadata:
