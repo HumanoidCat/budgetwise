@@ -5,7 +5,6 @@ import uuid
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.database import Base, engine
 from app.modules.ai.router import router as ai_router
 from app.modules.auth.router import router as auth_router
 from app.modules.budgets.router import router as budgets_router
@@ -48,10 +47,9 @@ async def request_id_and_timing(request: Request, call_next):
     return response
 
 
-@app.on_event("startup")
-def on_startup() -> None:
-    # MVP: crea las tablas al arrancar. S0-6 introduce Alembic para migraciones.
-    Base.metadata.create_all(bind=engine)
+# El esquema de la BD lo gestiona Alembic (S0-6): el contenedor ejecuta
+# `alembic upgrade head` antes de arrancar uvicorn (ver backend/Dockerfile).
+# En pruebas, tests/conftest.py crea las tablas con Base.metadata.create_all.
 
 
 @app.get("/health", tags=["observabilidad"])

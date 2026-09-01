@@ -22,7 +22,7 @@ El backend + PostgreSQL se despliegan en Render (plan gratuito) usando el Bluepr
 
 - El web service **se duerme tras 15 min sin tráfico** y tarda ~30–50 s en despertar. Antes de la presentación, abrir `/health` en el navegador un par de minutos antes para "calentarlo".
 - La base de datos gratuita **expira a los 30 días** de creada — nos alcanza de sobra hasta el 16 de septiembre.
-- Las tablas se crean solas al arrancar (`create_all`). Cuando S0-6 (Alembic) esté mergeado, agregar `alembic upgrade head` como paso previo al arranque.
+- El contenedor ejecuta `alembic upgrade head` antes de arrancar la API, así que el esquema de la BD siempre está al día con las migraciones de `backend/alembic/versions/`.
 
 ## Alternativa
 
