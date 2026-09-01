@@ -1,4 +1,4 @@
-"""Módulo transactions — HU-04: CRUD de ingresos y gastos (API).
+"""Módulo transactions — HU-04 (CRUD de ingresos y gastos) y HU-05 (saldo y resumen).
 
 Todos los endpoints exigen JWT: el usuario sale del token (`get_current_user`),
 nunca del body. El router solo valida entrada/salida y delega en el service.
@@ -15,6 +15,7 @@ from app.modules.transactions import service
 from app.modules.transactions.schemas import (
     DEFAULT_PAGE_SIZE,
     MAX_PAGE_SIZE,
+    SummaryOut,
     TransactionCreate,
     TransactionListOut,
     TransactionOut,
@@ -57,6 +58,19 @@ def list_transactions(
         limit=limit,
         offset=offset,
     )
+
+
+# IMPORTANTE: /summary va declarada ANTES que /{transaction_id}.
+# FastAPI evalúa las rutas en orden; si /{transaction_id} fuera primero, intentaría
+# convertir "summary" a int y devolvería 422 en vez de entrar acá.
+@router.get("/summary", response_model=SummaryOut)
+def summary(
+    month: str | None = Query(default=None, description="YYYY-MM; por defecto el mes actual"),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> SummaryOut:
+    """HU-05: saldo histórico del usuario y desglose del mes (totales y por categoría)."""
+    return service.summary(db, user.id, month)
 
 
 @router.get("/{transaction_id}", response_model=TransactionOut)

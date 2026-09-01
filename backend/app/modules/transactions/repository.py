@@ -113,6 +113,44 @@ def delete(db: Session, transaction: Transaction) -> None:
     db.commit()
 
 
+def totals_by_type(
+    db: Session,
+    user_id: int,
+    *,
+    date_from: date | None = None,
+    date_to: date | None = None,
+) -> dict[TransactionType, float]:
+    """Suma los montos del usuario agrupados por tipo. Un solo GROUP BY, no dos queries."""
+    stmt = (
+        select(Transaction.type, func.coalesce(func.sum(Transaction.amount), 0))
+        .where(*_conditions(user_id, date_from=date_from, date_to=date_to))
+        .group_by(Transaction.type)
+    )
+    return {row[0]: float(row[1]) for row in db.execute(stmt)}
+
+
+def totals_by_category(
+    db: Session,
+    user_id: int,
+    *,
+    date_from: date | None = None,
+    date_to: date | None = None,
+) -> list[tuple[int | None, str | None, TransactionType, float]]:
+    """Suma por (categoría, tipo). LEFT JOIN para no perder las transacciones sin categoría."""
+    stmt = (
+        select(
+            Transaction.category_id,
+            Category.name,
+            Transaction.type,
+            func.coalesce(func.sum(Transaction.amount), 0),
+        )
+        .join(Category, Category.id == Transaction.category_id, isouter=True)
+        .where(*_conditions(user_id, date_from=date_from, date_to=date_to))
+        .group_by(Transaction.category_id, Category.name, Transaction.type)
+    )
+    return [(row[0], row[1], row[2], float(row[3])) for row in db.execute(stmt)]
+
+
 def category_exists(db: Session, user_id: int, category_id: int) -> bool:
     """Valida que la categoría exista y sea del usuario.
 

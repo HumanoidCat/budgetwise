@@ -52,3 +52,35 @@ class TransactionListOut(BaseModel):
     total: int
     limit: int
     offset: int
+
+
+# --- HU-05: saldo y resumen ---
+
+
+class PeriodTotalsOut(BaseModel):
+    """Totales de un periodo. `balance` = income - expense."""
+
+    income: float
+    expense: float
+    balance: float
+
+
+class MonthTotalsOut(PeriodTotalsOut):
+    month: str = Field(description="Mes en formato YYYY-MM")
+
+
+class CategoryTotalsOut(PeriodTotalsOut):
+    """Desglose del mes por categoría. category_id null agrupa las transacciones sin categoría."""
+
+    category_id: int | None
+    category_name: str | None
+
+
+class SummaryOut(BaseModel):
+    """Resumen financiero del usuario: saldo histórico + detalle del mes consultado."""
+
+    balance: float = Field(description="Saldo histórico: todos los ingresos menos todos los gastos")
+    total_income: float
+    total_expense: float
+    month: MonthTotalsOut
+    by_category: list[CategoryTotalsOut]
