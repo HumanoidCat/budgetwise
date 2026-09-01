@@ -1,0 +1,24 @@
+Migraciones de base de datos — BudgetWise (S0-6)
+
+La URL de la base sale de DATABASE_URL (o del .env), no de alembic.ini.
+Todos los comandos se corren desde la carpeta backend/.
+
+Aplicar las migraciones pendientes:
+    alembic upgrade head
+
+Ver en qué revisión está la base:
+    alembic current
+
+Ver el historial:
+    alembic history --verbose
+
+Crear una migración nueva después de cambiar app/models/models.py:
+    alembic revision --autogenerate -m "descripcion corta"
+Revisar SIEMPRE el archivo generado en versions/ antes de commitearlo:
+autogenerate detecta la mayoría de los cambios, pero no todos.
+
+Volver atrás una revisión:
+    alembic downgrade -1
+
+Las pruebas no usan Alembic: tests/conftest.py arma el esquema con
+Base.metadata.create_all sobre SQLite, que es más rápido y aísla cada corrida.
