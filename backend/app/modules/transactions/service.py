@@ -1,4 +1,8 @@
-"""HU-04: casos de uso de ingresos y gastos. Toda la lógica de negocio vive aquí."""
+"""Casos de uso de transacciones: HU-04 (CRUD) y HU-05 (saldo y resumen).
+
+Toda la lógica de negocio vive aquí; el router solo delega.
+"""
+import calendar
 from datetime import date
 
 from fastapi import HTTPException, status
@@ -7,6 +11,9 @@ from sqlalchemy.orm import Session
 from app.models.models import Transaction, TransactionType
 from app.modules.transactions import repository
 from app.modules.transactions.schemas import (
+    CategoryTotalsOut,
+    MonthTotalsOut,
+    SummaryOut,
     TransactionCreate,
     TransactionListOut,
     TransactionOut,
@@ -122,3 +129,71 @@ def update_transaction(
 
 def delete_transaction(db: Session, user_id: int, transaction_id: int) -> None:
     repository.delete(db, _get_owned(db, user_id, transaction_id))
+
+
+# --- HU-05: cálculo de saldo y resumen ---
+
+
+def month_bounds(month: str | None) -> tuple[str, date, date]:
+    """Devuelve ('YYYY-MM', primer día, último día). month=None → mes actual."""
+    if month is None:
+        today = date.today()
+        year, number = today.year, today.month
+    else:
+        try:
+            year, number = (int(part) for part in month.split("-"))
+            date(year, number, 1)
+        except (ValueError, TypeError):
+            raise HTTPException(status_code=422, detail="El mes debe tener formato YYYY-MM") from None
+    last_day = calendar.monthrange(year, number)[1]
+    return f"{year:04d}-{number:02d}", date(year, number, 1), date(year, number, last_day)
+
+
+def _split(totals: dict[TransactionType, float]) -> tuple[float, float, float]:
+    """De un dict {tipo: monto} saca (ingresos, gastos, saldo). El saldo es la resta."""
+    income = round(totals.get(TransactionType.income, 0.0), 2)
+    expense = round(totals.get(TransactionType.expense, 0.0), 2)
+    return income, expense, round(income - expense, 2)
+
+
+def summary(db: Session, user_id: int, month: str | None = None) -> SummaryOut:
+    """Saldo histórico del usuario más el detalle del mes consultado."""
+    label, start, end = month_bounds(month)
+
+    total_income, total_expense, balance = _split(repository.totals_by_type(db, user_id))
+    month_income, month_expense, month_balance = _split(
+        repository.totals_by_type(db, user_id, date_from=start, date_to=end)
+    )
+
+    # Se acumula por categoría para juntar en una sola fila el ingreso y el gasto de cada una.
+    grouped: dict[int | None, dict] = {}
+    for category_id, category_name, tx_type, amount in repository.totals_by_category(
+        db, user_id, date_from=start, date_to=end
+    ):
+        row = grouped.setdefault(
+            category_id,
+            {"category_name": category_name, "income": 0.0, "expense": 0.0},
+        )
+        row["income" if tx_type is TransactionType.income else "expense"] += amount
+
+    by_category = [
+        CategoryTotalsOut(
+            category_id=category_id,
+            category_name=row["category_name"],
+            income=round(row["income"], 2),
+            expense=round(row["expense"], 2),
+            balance=round(row["income"] - row["expense"], 2),
+        )
+        for category_id, row in grouped.items()
+    ]
+    by_category.sort(key=lambda c: (-c.expense, c.category_id or 0))
+
+    return SummaryOut(
+        balance=balance,
+        total_income=total_income,
+        total_expense=total_expense,
+        month=MonthTotalsOut(
+            month=label, income=month_income, expense=month_expense, balance=month_balance
+        ),
+        by_category=by_category,
+    )
