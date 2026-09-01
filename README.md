@@ -10,7 +10,8 @@ MVP de gestión de presupuesto personal — Ingeniería de Software II, Universi
 budgetwise/
 ├── backend/    # API FastAPI (Python) — monolito modular con capas
 ├── mobile/     # App React Native (Expo) — también exporta a web
-├── k8s/        # Manifiestos Kubernetes (exploración con minikube)
+├── k8s/        # Manifiestos Kubernetes (exploración con k3d/minikube)
+├── observability/  # Prometheus, alertas y dashboard de Grafana (HU-16)
 ├── docs/       # Arquitectura y evidencia Scrum
 └── .github/    # CI (GitHub Actions) y plantilla de PR
 ```
@@ -30,10 +31,11 @@ a futuro. Detalle en [docs/architecture.md](docs/architecture.md).
 cd backend
 cp .env.example .env
 docker compose up --build
-# API en http://localhost:8000 — docs interactivas en http://localhost:8000/docs
+# API en http://localhost:8001 — docs interactivas en http://localhost:8001/docs
+# (puertos del host: API 8001, Postgres 5433; se cambian en .env, ver .env.example)
 ```
 
-Sin Docker: `pip install -r requirements.txt` y `uvicorn app.main:app --reload` (requiere PostgreSQL local o SQLite vía .env).
+Sin Docker: `pip install -r requirements.txt` y `uvicorn app.main:app --reload --port 8001` (requiere PostgreSQL local o SQLite vía .env).
 
 ## Levantar la app móvil
 
@@ -44,7 +46,14 @@ npx expo start   # escanear el QR con Expo Go en el celular
 ```
 
 Para que el celular alcance el API local, poner en `mobile/.env` la IP de tu
-máquina en la red WiFi: `EXPO_PUBLIC_API_URL=http://192.168.x.x:8000`.
+máquina en la red WiFi: `EXPO_PUBLIC_API_URL=http://192.168.x.x:8001`.
+
+## Observabilidad
+
+`docker compose up` levanta también Prometheus (http://localhost:9090) y Grafana
+(http://localhost:3000, admin/admin) con un dashboard del API ya aprovisionado.
+API en http://localhost:8001. Métricas en `/metrics`, health con chequeo de BD en `/health`, logs JSON con
+`X-Request-ID`. Detalle y guion de demo en [docs/observability.md](docs/observability.md).
 
 ## Pruebas
 
