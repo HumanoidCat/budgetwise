@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" role="img" aria-label="Inicio">
+  <title>Inicio</title>
+  <rect width="390" height="844" fill="#F5F7FA" />
+  <text x="20" y="26" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#14181F" text-anchor="start">9:41</text>
+  <text x="370" y="26" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#5A6474" text-anchor="end">▮▮▮  ▲  ▰</text>
+  <text x="20" y="72" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="700" fill="#14181F" text-anchor="start">Hola, Avril</text>
+  <text x="20" y="94" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="start">Agosto 2026</text>
+  <rect x="20" y="112" width="350" height="96" fill="#FFFFFF" rx="14" stroke="#E2E7EE" stroke-width="1" />
+  <text x="38" y="142" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="start">Saldo actual</text>
+  <text x="38" y="180" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="30" font-weight="700" fill="#14181F" text-anchor="start">₡ 462 600</text>
+  <rect x="20" y="224" width="169.0" height="82" fill="#FFFFFF" rx="14" stroke="#E2E7EE" stroke-width="1" />
+  <text x="34" y="250" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="400" fill="#5A6474" text-anchor="start">Ingresos</text>
+  <text x="34" y="280" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#0F7A44" text-anchor="start">+ 480 000</text>
+  <rect x="201.0" y="224" width="169.0" height="82" fill="#FFFFFF" rx="14" stroke="#E2E7EE" stroke-width="1" />
+  <text x="215.0" y="250" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="400" fill="#5A6474" text-anchor="start">Gastos</text>
+  <text x="215.0" y="280" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#B32D33" text-anchor="start">- 18 400</text>
+  <text x="20" y="344" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#14181F" text-anchor="start">Gastos por categoría</text>
+  <text x="20" y="378" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="start">Comida</text>
+  <text x="370" y="378" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="end">46 %</text>
+  <rect x="20" y="386" width="350" height="10" fill="#E2E7EE" rx="5.0" />
+  <rect x="20" y="386" width="161.0" height="10" fill="#2A5BD7" rx="5.0" />
+  <text x="20" y="426" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="start">Transporte</text>
+  <text x="370" y="426" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="end">28 %</text>
+  <rect x="20" y="434" width="350" height="10" fill="#E2E7EE" rx="5.0" />
+  <rect x="20" y="434" width="98.0" height="10" fill="#0F7A44" rx="5.0" />
+  <text x="20" y="474" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="start">Servicios</text>
+  <text x="370" y="474" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="end">16 %</text>
+  <rect x="20" y="482" width="350" height="10" fill="#E2E7EE" rx="5.0" />
+  <rect x="20" y="482" width="56.0" height="10" fill="#8A5300" rx="5.0" />
+  <text x="20" y="522" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="start">Otros</text>
+  <text x="370" y="522" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="end">10 %</text>
+  <rect x="20" y="530" width="350" height="10" fill="#E2E7EE" rx="5.0" />
+  <rect x="20" y="530" width="35.0" height="10" fill="#5A6474" rx="5.0" />
+  <text x="20" y="580" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#14181F" text-anchor="start">Evolución mensual</text>
+  <rect x="37.5" y="638" width="52.5" height="38" fill="#2A5BD7" rx="4" />
+  <text x="63.75" y="692" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#5A6474" text-anchor="middle">May</text>
+  <rect x="125.0" y="622" width="52.5" height="54" fill="#2A5BD7" rx="4" />
+  <text x="151.25" y="692" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#5A6474" text-anchor="middle">Jun</text>
+  <rect x="212.5" y="646" width="52.5" height="30" fill="#2A5BD7" rx="4" />
+  <text x="238.75" y="692" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#5A6474" text-anchor="middle">Jul</text>
+  <rect x="300.0" y="614" width="52.5" height="62" fill="#2A5BD7" rx="4" />
+  <text x="326.25" y="692" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#5A6474" text-anchor="middle">Ago</text>
+  <rect x="0" y="760" width="390" height="84" fill="#FFFFFF" />
+  <line x1="0" y1="760" x2="390" y2="760" stroke="#E2E7EE" stroke-width="1" />
+  <rect x="37.75" y="778" width="22" height="22" fill="#2A5BD7" rx="6" opacity="1" />
+  <text x="48.75" y="816" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#2A5BD7" text-anchor="middle">Inicio</text>
+  <rect x="135.25" y="778" width="22" height="22" fill="#5A6474" rx="6" opacity="0.45" />
+  <text x="146.25" y="816" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#5A6474" text-anchor="middle">Movimientos</text>
+  <rect x="232.75" y="778" width="22" height="22" fill="#5A6474" rx="6" opacity="0.45" />
+  <text x="243.75" y="816" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#5A6474" text-anchor="middle">Metas</text>
+  <rect x="330.25" y="778" width="22" height="22" fill="#5A6474" rx="6" opacity="0.45" />
+  <text x="341.25" y="816" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#5A6474" text-anchor="middle">Ajustes</text>
+</svg>

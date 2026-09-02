@@ -2,7 +2,7 @@
  * Cliente HTTP central de la app.
  * Toda llamada al backend pasa por aquí (auth token, base URL, errores).
  */
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:8000";
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:8001";
 
 let authToken: string | null = null;
 

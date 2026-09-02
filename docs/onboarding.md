@@ -34,7 +34,8 @@ cd budgetwise
 ```bash
 cd backend && cp .env.example .env && cd ..
 docker compose up --build
-# API: http://localhost:8000 — probar en http://localhost:8000/docs
+# API: http://localhost:8001 — probar en http://localhost:8001/docs
+# (usamos 8001 y 5433 en el host para no chocar con geoguardian)
 ```
 
 **Backend** (sin Docker):
@@ -43,14 +44,14 @@ cd backend
 python -m venv .venv && .venv\Scripts\activate   # Windows
 pip install -r requirements.txt
 copy .env.example .env    # y cambiar DATABASE_URL a sqlite:///./budgetwise.db
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8001
 ```
 
 **App móvil:**
 ```bash
 cd mobile
 npm install
-copy .env.example .env    # poner la IP de SU máquina en la red WiFi
+copy .env.example .env    # poner la IP de SU máquina en la red WiFi (puerto 8001)
 npx expo start            # escanear el QR con Expo Go
 ```
 

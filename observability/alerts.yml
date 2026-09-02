@@ -1,0 +1,42 @@
+# Reglas de alerta — HU-16 "detección de fallos".
+# Se ven en Prometheus > Alerts (http://localhost:9090/alerts) y en el dashboard de Grafana.
+groups:
+  - name: budgetwise
+    rules:
+      - alert: ApiCaida
+        expr: up{job="budgetwise-api"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "El API de BudgetWise no responde"
+          description: "Prometheus no puede raspar /metrics desde hace 30 s."
+
+      - alert: BaseDeDatosCaida
+        expr: budgetwise_database_up == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "El API no puede conectarse a PostgreSQL"
+          description: "GET /health reporta la base de datos como caída."
+
+      - alert: TasaDeErroresAlta
+        expr: |
+          sum(rate(budgetwise_http_requests_total{status=~"5.."}[2m]))
+            / clamp_min(sum(rate(budgetwise_http_requests_total[2m])), 0.001) > 0.05
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Más del 5% de las peticiones devuelven 5xx"
+
+      - alert: LatenciaAlta
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(budgetwise_http_request_duration_seconds_bucket[2m])) by (le)) > 1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "El p95 de latencia supera 1 segundo"
