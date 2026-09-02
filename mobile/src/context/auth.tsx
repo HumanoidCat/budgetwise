@@ -19,7 +19,7 @@ import {
 
 import { setAuthToken } from '@/api/client';
 import { iniciarSesion, registrar, yo, type Usuario } from '@/api/auth';
-import { borrarToken, guardarToken, leerToken } from '@/context/session-storage';
+import { borrarToken, guardarToken, leerToken } from '@/lib/storage';
 
 type EstadoAuth = {
   /** Usuario con sesión iniciada, o null. */
