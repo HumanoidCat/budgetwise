@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: budgetwise-api
+  namespace: budgetwise
+  labels:
+    app: budgetwise-api
+spec:
+  replicas: 2   # 2 réplicas detrás del Service: la demo de escalabilidad de la rúbrica
+  selector:
+    matchLabels:
+      app: budgetwise-api
+  template:
+    metadata:
+      labels:
+        app: budgetwise-api
+    spec:
+      containers:
+        - name: api
+          # Imagen local construida con docker compose; se mete al clúster con
+          # `k3d image import` (ver README). Never = no intentar bajarla de un registry.
+          image: budgetwise-api:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: { name: budgetwise-secrets, key: DATABASE_URL }
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef: { name: budgetwise-secrets, key: SECRET_KEY }
+          # /health verifica la BD (HU-16): si la BD cae, el pod sale de servicio solo.
+          readinessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests: { cpu: 100m, memory: 128Mi }
+            limits: { cpu: 500m, memory: 512Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: budgetwise-api
+  namespace: budgetwise
+spec:
+  selector:
+    app: budgetwise-api
+  ports:
+    - port: 8000
+      targetPort: 8000
