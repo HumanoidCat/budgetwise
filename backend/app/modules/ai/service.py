@@ -79,16 +79,21 @@ def _rule_budgets(db: Session, user_id: int, start, end) -> list[RecommendationO
         return out
     for budget in budgets:
         status = budget_status(db, user_id, budget, start, end)
-        name = status.category_name or "tu presupuesto general"
+        if status.category_name:
+            label = f"el presupuesto de {status.category_name}"
+            freno = f"los gastos de {status.category_name}"
+        else:
+            label = "tu presupuesto general"
+            freno = "los gastos"
         if status.status == "exceeded":
             out.append(
                 RecommendationOut(
                     type="presupuesto_excedido",
                     severity="critical",
-                    title=f"Te pasaste del presupuesto de {name}",
+                    title=f"Te pasaste de {label}",
                     message=(
                         f"Llevás ₡{status.spent:,.0f} de un límite de ₡{status.monthly_limit:,.0f} "
-                        f"({status.percent_used:.0f}%). Intentá frenar los gastos de {name} "
+                        f"({status.percent_used:.0f}%). Intentá frenar {freno} "
                         "por el resto del mes."
                     ),
                 )
@@ -98,7 +103,7 @@ def _rule_budgets(db: Session, user_id: int, start, end) -> list[RecommendationO
                 RecommendationOut(
                     type="presupuesto_por_agotarse",
                     severity="warning",
-                    title=f"El presupuesto de {name} está por agotarse",
+                    title=f"{label[0].upper()}{label[1:]} está por agotarse",
                     message=(
                         f"Ya usaste el {status.percent_used:.0f}% "
                         f"(₡{status.spent:,.0f} de ₡{status.monthly_limit:,.0f}). "
