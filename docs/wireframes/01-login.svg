@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" role="img" aria-label="Iniciar sesión">
+  <title>Iniciar sesión</title>
+  <rect width="390" height="844" fill="#F5F7FA" />
+  <text x="20" y="26" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#14181F" text-anchor="start">9:41</text>
+  <text x="370" y="26" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#5A6474" text-anchor="end">▮▮▮  ▲  ▰</text>
+  <text x="20" y="108" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="700" fill="#14181F" text-anchor="start">BudgetWise</text>
+  <text x="20" y="134" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="400" fill="#5A6474" text-anchor="start">Ordená tus ingresos y gastos.</text>
+  <text x="20" y="190" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="start">Correo</text>
+  <rect x="20" y="198" width="350" height="48" fill="#FFFFFF" rx="10" stroke="#868D99" stroke-width="1" />
+  <text x="34" y="227.0" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="400" fill="#14181F" text-anchor="start">avril@correo.com</text>
+  <text x="20" y="272" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#5A6474" text-anchor="start">Contraseña</text>
+  <rect x="20" y="280" width="350" height="48" fill="#FFFFFF" rx="10" stroke="#B32D33" stroke-width="1" />
+  <text x="34" y="309.0" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="400" fill="#14181F" text-anchor="start">••••••••</text>
+  <text x="20" y="350" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#B32D33" text-anchor="start">Correo o contraseña incorrectos</text>
+  <rect x="20" y="380" width="350" height="52" fill="#2A5BD7" rx="12" />
+  <text x="195.0" y="412.0" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#FFFFFF" text-anchor="middle">Iniciar sesión</text>
+  <text x="195.0" y="466" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="400" fill="#2A5BD7" text-anchor="middle">¿No tenés cuenta? Crear cuenta</text>
+  <rect x="20" y="498" width="350" height="49" fill="#EAF0FE" rx="6" />
+  <text x="28" y="513" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="400" fill="#2A5BD7" text-anchor="start">El error que devuelve el API se muestra aquí, bajo el campo, y</text>
+  <text x="28" y="526" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="400" fill="#2A5BD7" text-anchor="start">el borde del campo se pone en color de error. HU-06 pide que los</text>
+  <text x="28" y="539" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="400" fill="#2A5BD7" text-anchor="start">errores del API sean visibles para la persona.</text>
+  <rect x="20" y="584" width="350" height="36" fill="#EAF0FE" rx="6" />
+  <text x="28" y="599" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="400" fill="#2A5BD7" text-anchor="start">Si ya hay sesión guardada en SecureStore, esta pantalla no se</text>
+  <text x="28" y="612" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="400" fill="#2A5BD7" text-anchor="start">ve: la app entra directo a Inicio.</text>
+</svg>
