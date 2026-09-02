@@ -6,6 +6,7 @@ Exploración de Kubernetes como estrategia de despliegue y escalabilidad (rúbri
 
 | Archivo | Recursos |
 |---|---|
+| `kustomization.yaml` | Lista de manifiestos para `kubectl apply -k k8s/` |
 | `00-namespace.yaml` | Namespace `budgetwise` que aísla todo lo del proyecto |
 | `01-secrets.yaml` | Secret con credenciales de BD y `SECRET_KEY` (solo para el clúster local) |
 | `02-postgres.yaml` | PVC de 1 Gi + Deployment de PostgreSQL (1 réplica) + Service |
@@ -25,8 +26,8 @@ k3d cluster create budgetwise
 # 3. Meter la imagen local al clúster (no hay registry: se importa)
 k3d image import budgetwise-api:latest -c budgetwise
 
-# 4. Aplicar los manifiestos
-kubectl apply -f k8s/
+# 4. Aplicar los manifiestos (-k usa kustomization.yaml; apply -f fallaria por este README)
+kubectl apply -k k8s/
 
 # 5. Esperar los pods y exponer el API en el puerto 8002 local
 kubectl -n budgetwise wait --for=condition=ready pod --all --timeout=120s
@@ -55,6 +56,8 @@ k3d cluster delete budgetwise            # borra el clúster completo
 ```
 
 ## Notas
+
+- Al levantar por primera vez, los pods del API reinician 2-3 veces mientras PostgreSQL arranca (alembic no encuentra la base todavia); en cuanto la BD esta lista, Kubernetes los recupera solo. Es el comportamiento esperado y sirve como demo de self-healing.
 
 - El clúster `budgetwise` es independiente del clúster `geoguardian` que pueda existir en la misma máquina; no comparten nada.
 - `imagePullPolicy: Never` en el API: la imagen se importa con `k3d image import`, no se descarga. Si cambiás el código, repetí los pasos 1 y 3 y luego `kubectl -n budgetwise rollout restart deployment/budgetwise-api`.
