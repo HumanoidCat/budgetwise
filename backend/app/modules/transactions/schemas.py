@@ -76,6 +76,22 @@ class CategoryTotalsOut(PeriodTotalsOut):
     category_name: str | None
 
 
+# --- HU-19: evolución mensual ---
+
+DEFAULT_MONTHS = 6
+MAX_MONTHS = 24
+
+
+class MonthlyOut(BaseModel):
+    """Serie de los últimos N meses, del más viejo al más nuevo.
+
+    Reutiliza `MonthTotalsOut` a propósito: un mes de la serie y el mes del
+    resumen son la misma cosa, y conviene que la app los lea igual.
+    """
+
+    months: list[MonthTotalsOut]
+
+
 class SummaryOut(BaseModel):
     """Resumen financiero del usuario: saldo histórico + detalle del mes consultado."""
 

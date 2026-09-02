@@ -12,6 +12,7 @@ from app.models.models import Transaction, TransactionType
 from app.modules.transactions import repository
 from app.modules.transactions.schemas import (
     CategoryTotalsOut,
+    MonthlyOut,
     MonthTotalsOut,
     SummaryOut,
     TransactionCreate,
@@ -154,6 +155,43 @@ def _split(totals: dict[TransactionType, float]) -> tuple[float, float, float]:
     income = round(totals.get(TransactionType.income, 0.0), 2)
     expense = round(totals.get(TransactionType.expense, 0.0), 2)
     return income, expense, round(income - expense, 2)
+
+
+def _shift_month(year: int, month: int, delta: int) -> tuple[int, int]:
+    """Corre (año, mes) `delta` meses. Se hace con aritmética sobre meses totales
+    porque restar 30 días por mes se desfasa en febrero y en los meses de 31."""
+    total = year * 12 + (month - 1) + delta
+    return total // 12, total % 12 + 1
+
+
+def monthly_series(db: Session, user_id: int, months: int) -> MonthlyOut:
+    """HU-19: los últimos `months` meses hasta el actual, del más viejo al más nuevo.
+
+    Los meses sin movimientos van en cero: el gráfico de la pantalla de Inicio
+    necesita la serie completa, sin huecos que le corran el eje.
+    """
+    today = date.today()
+    first_year, first_month = _shift_month(today.year, today.month, -(months - 1))
+    start = date(first_year, first_month, 1)
+    end = date(today.year, today.month, calendar.monthrange(today.year, today.month)[1])
+
+    # {(año, mes): {tipo: monto}} con lo que sí tiene datos.
+    encontrados: dict[tuple[int, int], dict[TransactionType, float]] = {}
+    for year, month, tx_type, amount in repository.totals_by_month(
+        db, user_id, date_from=start, date_to=end
+    ):
+        encontrados.setdefault((year, month), {})[tx_type] = amount
+
+    serie = []
+    for offset in range(months):
+        year, month = _shift_month(first_year, first_month, offset)
+        income, expense, balance = _split(encontrados.get((year, month), {}))
+        serie.append(
+            MonthTotalsOut(
+                month=f"{year:04d}-{month:02d}", income=income, expense=expense, balance=balance
+            )
+        )
+    return MonthlyOut(months=serie)
 
 
 def summary(db: Session, user_id: int, month: str | None = None) -> SummaryOut:

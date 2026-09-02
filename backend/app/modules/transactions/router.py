@@ -13,8 +13,11 @@ from app.models.models import User
 from app.modules.auth.dependencies import get_current_user
 from app.modules.transactions import service
 from app.modules.transactions.schemas import (
+    DEFAULT_MONTHS,
     DEFAULT_PAGE_SIZE,
+    MAX_MONTHS,
     MAX_PAGE_SIZE,
+    MonthlyOut,
     SummaryOut,
     TransactionCreate,
     TransactionListOut,
@@ -58,6 +61,25 @@ def list_transactions(
         limit=limit,
         offset=offset,
     )
+
+
+# /monthly también va antes que /{transaction_id}, por el mismo motivo de orden.
+@router.get("/monthly", response_model=MonthlyOut)
+def monthly(
+    months: int = Query(
+        default=DEFAULT_MONTHS,
+        ge=1,
+        le=MAX_MONTHS,
+        description="Cantidad de meses hacia atrás, contando el actual",
+    ),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> MonthlyOut:
+    """HU-19: evolución mensual para el gráfico de la pantalla de Inicio.
+
+    Devuelve la serie completa, con los meses sin movimientos en cero.
+    """
+    return service.monthly_series(db, user.id, months)
 
 
 # IMPORTANTE: /summary va declarada ANTES que /{transaction_id}.
