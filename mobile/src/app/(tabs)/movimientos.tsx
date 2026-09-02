@@ -1,5 +1,5 @@
 /**
- * Inicio — pendiente de HU-13. Wireframe: docs/wireframes/03-inicio.svg
+ * Movimientos — pendiente de HU-07. Wireframe: docs/wireframes/04-movimientos.svg
  *
  * Marcador de posicion de S0-4: la ruta existe y la pestana navega. El
  * contenido llega con su historia.
@@ -12,9 +12,9 @@ import { FontSize, Palette, Spacing } from '@/constants/theme';
 export default function Pantalla() {
   return (
     <View style={estilos.raiz}>
-      <Text style={estilos.titulo}>Inicio</Text>
-      <Text style={estilos.nota}>Saldo, ingresos y gastos del mes, y graficos por categoria.</Text>
-      <Text style={estilos.etiqueta}>HU-13</Text>
+      <Text style={estilos.titulo}>Movimientos</Text>
+      <Text style={estilos.nota}>Lista de ingresos y gastos, con filtros y alta de movimiento.</Text>
+      <Text style={estilos.etiqueta}>HU-07</Text>
     </View>
   );
 }

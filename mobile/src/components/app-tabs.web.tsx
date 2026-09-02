@@ -1,115 +1,113 @@
 import {
   Tabs,
   TabList,
-  TabTrigger,
   TabSlot,
-  TabTriggerSlotProps,
-  TabListProps,
+  TabTrigger,
+  type TabListProps,
+  type TabTriggerSlotProps,
 } from 'expo-router/ui';
-import { SymbolView } from 'expo-symbols';
-import { Pressable, useColorScheme, View, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { ExternalLink } from './external-link';
-import { ThemedText } from './themed-text';
-import { ThemedView } from './themed-view';
+import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
 
-import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
+/**
+ * Barra de pestañas en navegador. Su gemelo para celular es app-tabs.tsx.
+ *
+ * La API es distinta: aquí se usa Tabs/TabList/TabTrigger de expo-router/ui,
+ * con href por pestaña, mientras que en nativo se usa NativeTabs con name.
+ * TODA pestaña que se agregue aquí hay que agregarla también allá.
+ *
+ * Va abajo, como en los wireframes. La plantilla de Expo la traía arriba y
+ * flotante, con la marca "Expo Starter" y un enlace a los docs de Expo; eso se
+ * quitó porque no es parte de la app.
+ *
+ * Sin iconos a propósito: en navegador las etiquetas se leen de sobra y evita
+ * mantener una segunda forma de cargar los PNG.
+ */
+
+const PESTANAS = [
+  { name: 'index', href: '/', etiqueta: 'Inicio' },
+  { name: 'movimientos', href: '/movimientos', etiqueta: 'Movimientos' },
+  { name: 'metas', href: '/metas', etiqueta: 'Metas' },
+  { name: 'ajustes', href: '/ajustes', etiqueta: 'Ajustes' },
+] as const;
 
 export default function AppTabs() {
   return (
-    <Tabs>
-      <TabSlot style={{ height: '100%' }} />
+    <Tabs style={estilos.raiz}>
+      <TabSlot style={estilos.contenido} />
       <TabList asChild>
-        <CustomTabList>
-          <TabTrigger name="home" href="/" asChild>
-            <TabButton>Home</TabButton>
-          </TabTrigger>
-          <TabTrigger name="explore" href="/explore" asChild>
-            <TabButton>Explore</TabButton>
-          </TabTrigger>
-        </CustomTabList>
+        <BarraInferior>
+          {PESTANAS.map((p) => (
+            <TabTrigger key={p.name} name={p.name} href={p.href} asChild>
+              <BotonPestana>{p.etiqueta}</BotonPestana>
+            </TabTrigger>
+          ))}
+        </BarraInferior>
       </TabList>
     </Tabs>
   );
 }
 
-export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps) {
+export function BotonPestana({ children, isFocused, ...props }: TabTriggerSlotProps) {
   return (
-    <Pressable {...props} style={({ pressed }) => pressed && styles.pressed}>
-      <ThemedView
-        type={isFocused ? 'backgroundSelected' : 'backgroundElement'}
-        style={styles.tabButtonView}>
-        <ThemedText type="small" themeColor={isFocused ? 'text' : 'textSecondary'}>
-          {children}
-        </ThemedText>
-      </ThemedView>
+    <Pressable
+      {...props}
+      accessibilityRole="tab"
+      accessibilityState={{ selected: isFocused }}
+      style={({ pressed }) => [estilos.boton, pressed && estilos.presionado]}>
+      <Text style={[estilos.etiqueta, isFocused && estilos.etiquetaActiva]}>{children}</Text>
     </Pressable>
   );
 }
 
-export function CustomTabList(props: TabListProps) {
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
-
+export function BarraInferior(props: TabListProps) {
   return (
-    <View {...props} style={styles.tabListContainer}>
-      <ThemedView type="backgroundElement" style={styles.innerContainer}>
-        <ThemedText type="smallBold" style={styles.brandText}>
-          Expo Starter
-        </ThemedText>
-
-        {props.children}
-
-        <ExternalLink href="https://docs.expo.dev" asChild>
-          <Pressable style={styles.externalPressable}>
-            <ThemedText type="link">Docs</ThemedText>
-            <SymbolView
-              tintColor={colors.text}
-              name={{ ios: 'arrow.up.right.square', web: 'link' }}
-              size={12}
-            />
-          </Pressable>
-        </ExternalLink>
-      </ThemedView>
+    <View {...props} style={estilos.barra}>
+      <View style={estilos.barraInterna}>{props.children}</View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  tabListContainer: {
-    position: 'absolute',
+const estilos = StyleSheet.create({
+  raiz: {
+    flex: 1,
+  },
+  contenido: {
+    // flex: 1 y no height: '100%'. Con altura fija el contenido ocupa toda la
+    // ventana y empuja la barra fuera de la pantalla.
+    flex: 1,
+  },
+  barra: {
     width: '100%',
-    padding: Spacing.three,
-    justifyContent: 'center',
+    backgroundColor: Palette.superficie,
+    borderTopWidth: 1,
+    borderTopColor: Palette.borde,
     alignItems: 'center',
-    flexDirection: 'row',
   },
-  innerContainer: {
+  barraInterna: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: 480,
     paddingVertical: Spacing.two,
-    paddingHorizontal: Spacing.five,
-    borderRadius: Spacing.five,
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexGrow: 1,
-    gap: Spacing.two,
-    maxWidth: MaxContentWidth,
+    paddingHorizontal: Spacing.three,
   },
-  brandText: {
-    marginRight: 'auto',
+  boton: {
+    paddingVertical: Spacing.two,
+    paddingHorizontal: Spacing.three,
+    borderRadius: Radius.campo,
   },
-  pressed: {
+  presionado: {
     opacity: 0.7,
   },
-  tabButtonView: {
-    paddingVertical: Spacing.one,
-    paddingHorizontal: Spacing.three,
-    borderRadius: Spacing.three,
+  etiqueta: {
+    fontSize: FontSize.etiqueta,
+    color: Palette.textoSuave,
   },
-  externalPressable: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: Spacing.one,
-    marginLeft: Spacing.three,
+  etiquetaActiva: {
+    color: Palette.primario,
+    fontWeight: '600',
   },
 });
