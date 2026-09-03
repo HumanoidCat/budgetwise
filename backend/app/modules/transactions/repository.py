@@ -1,7 +1,7 @@
 """Capa de persistencia del módulo transactions (HU-04). Sin reglas de negocio."""
 from datetime import date
 
-from sqlalchemy import func, select
+from sqlalchemy import extract, func, select
 from sqlalchemy.orm import Session, joinedload
 
 from app.models.models import Category, Transaction, TransactionType
@@ -149,6 +149,29 @@ def totals_by_category(
         .group_by(Transaction.category_id, Category.name, Transaction.type)
     )
     return [(row[0], row[1], row[2], float(row[3])) for row in db.execute(stmt)]
+
+
+def totals_by_month(
+    db: Session,
+    user_id: int,
+    *,
+    date_from: date,
+    date_to: date,
+) -> list[tuple[int, int, TransactionType, float]]:
+    """Suma por (año, mes, tipo) en el rango pedido. Devuelve solo los meses con datos.
+
+    Se usa `extract` y no `strftime('%Y-%m', ...)`: strftime existe en SQLite pero
+    no en PostgreSQL, así que las pruebas pasarían y producción fallaría. `extract`
+    lo traduce SQLAlchemy al dialecto de cada base.
+    """
+    year = extract("year", Transaction.date)
+    month = extract("month", Transaction.date)
+    stmt = (
+        select(year, month, Transaction.type, func.coalesce(func.sum(Transaction.amount), 0))
+        .where(*_conditions(user_id, date_from=date_from, date_to=date_to))
+        .group_by(year, month, Transaction.type)
+    )
+    return [(int(row[0]), int(row[1]), row[2], float(row[3])) for row in db.execute(stmt)]
 
 
 def category_exists(db: Session, user_id: int, category_id: int) -> bool:
