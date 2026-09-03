@@ -58,10 +58,27 @@ export function etiquetaFecha(iso: string): string {
   return mismoAnio ? base : `${base} de ${d.getFullYear()}`;
 }
 
-/** Separador de miles con espacio fino, como en los wireframes: 462 600. */
+/**
+ * Separador de miles con espacio, como en los wireframes: 462 600.
+ *
+ * Los céntimos se muestran solo cuando existen: 4200 da "4 200" y 4200.5 da
+ * "4 200,50". Coma decimal, que es lo que se usa en Costa Rica.
+ *
+ * La versión anterior redondeaba con Math.round y se comía los céntimos: un
+ * gasto de 4200,50 se mostraba como 4 201. En una app de dinero eso no es un
+ * detalle de formato, es un número equivocado en pantalla.
+ */
 function conMiles(n: number): string {
-  const entero = Math.round(Math.abs(n));
-  return entero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  // Se redondea a dos decimales ANTES de partir, para que 4200.999 dé
+  // "4 201" y no "4 200,100".
+  const abs = Math.round(Math.abs(n) * 100) / 100;
+  const entero = Math.floor(abs);
+  const centimos = Math.round((abs - entero) * 100);
+
+  const enteroTexto = entero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return centimos === 0
+    ? enteroTexto
+    : `${enteroTexto},${String(centimos).padStart(2, '0')}`;
 }
 
 /**

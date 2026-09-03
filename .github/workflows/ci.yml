@@ -34,7 +34,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      # npm ci y no npm install: instala exactamente lo que fija
+      # package-lock.json y falla si el lock no concuerda con package.json.
+      # Con npm install, el CI podía resolver versiones distintas a las de la
+      # máquina de quien abrió el PR.
+      - run: npm ci
       - name: Lint
         run: npm run lint --if-present
       - name: Pruebas unitarias
