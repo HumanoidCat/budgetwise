@@ -32,3 +32,26 @@ Bloqueos abiertos:
 Decisiones del PO (martes):
 - HU-09 se redefine (mismo esfuerzo, 3 pts): (1) umbral de cobertura en CI (pytest --cov-fail-under=80) para que la calidad no dependa de buena voluntad; (2) pruebas de integración ENTRE módulos que nadie cubre: registro → categorías por defecto → transacción → saldo → presupuesto → alerta; (3) casos límite cruzados (borrar categoría con presupuesto asociado, resumen con mes sin datos, etc.).
 - HU-06: el criterio de sesión persistida se implementa con un wrapper de almacenamiento (SecureStore en nativo, localStorage en web) para poder desarrollarlo y probarlo en web; la verificación en Android se hace con el APK de la demo (C-1).
+
+## Miércoles 2 de septiembre
+
+| Integrante | Participó | Resumen |
+|---|---|---|
+| Alejandro Luna | Sí (10:03 am) | Ayer: PR #44 de HU-03 abierto, revisado por César y mergeado; CI verde, 123 pruebas, 97% de cobertura; issue #10 cerrado — categories deja de ser el último módulo en placeholder. Hoy: HU-08 (#15), pantalla de categorías con los wireframes de S0-7. Bloqueos: ninguno. |
+| César Ubau | Sí (10:35 am) | Ayer: aprobó #38 (wireframes) y #44 (categorías); HU-10 (API de metas) mergeada en #39; HU-19 (evolución mensual) entregada en #45 con CI verde. Hoy: revisó y aprobó #47 (pantalla de transacciones) y entregó HU-10b (pantalla de metas) en #48. Sin backlog propio pendiente. Bloqueos: #45 y #48 esperan review; #48 no corre CI por apuntar a la rama de Avril; espera decisión sobre los decimales (#47). |
+| Avril Madrigal | Sí (11:57 am) | Ayer: cerró S0-7 (#38 mergeado) y dejó listas S0-4 y HU-06. Hoy: PR #46 con S0-4 + HU-06 juntas (el login exigía la reorganización (auth)/(tabs)), CI verde, wrapper de storage en src/lib/storage.ts; terminó HU-07 (lista con filtro y agrupación por día, paginación, 4 estados, alta/edición con borrado confirmado, probada de punta a punta en web contra el API desplegado); sigue con el PR de HU-07, capturas de evidencia y HU-13. Bloqueos: ninguno. |
+| Alejandro Zamora | Sí | Ayer: mergeó HU-14 (#43) — backend del MVP completo, las 9 historias propias entregadas; limpieza de ramas. Hoy: review de #45 y #46, decisiones de decimales y lockfile, registro del acta. Bloqueos: ninguno. |
+
+Los tres dailies llegaron antes de las 12:00 por primera vez en el sprint.
+
+Bloqueos abiertos:
+- #45 y #48 sin review asignada (resuelto abajo: AZ toma #45 y #46, Luna toma #48).
+- #48 sin CI: el workflow solo dispara contra main. Se resuelve con el orden de merges.
+
+Decisiones del PO (miércoles):
+- Decimales (#47): la corrección va en la app, no en el API. `conMiles()` en src/lib/formato.ts muestra dos decimales con coma cuando el monto tiene céntimos ("4 200,50") y entero cuando no; el API se queda con Numeric(12,2) tal como está. Lo integra Avril en el mismo #47 al rebasar.
+- mobile/package-lock.json SÍ se versiona (hoy el CI instala versiones potencialmente distintas a las locales); el job mobile pasa de `npm install` a `npm ci`. Va en el #47.
+- Orden de merges: #46 (squash) → #45 (update-branch + squash) → #47 (rebase sobre main + squash) → #48 (re-apuntar base a main + rebase + squash).
+- Evidencia S0-7 en el tablero: la captura se toma tal como está y la evidencia lleva una nota de que el Project fue privado hasta el 1/9, por lo que la tarjeta pasó directo a Done con el merge. No se recrea el paso por In Progress.
+- Nota para la demo: las cuentas creadas antes del merge de HU-03 no tienen categorías por defecto (se crean al registrarse). La demo del 16 usa una cuenta nueva o los datos de semilla.
+- César, sin backlog propio: toma la preparación de datos de demo (script de semilla con cuenta demo, ~3 meses de movimientos, presupuestos y metas) — sirve para la demo del 16 y para probar el gráfico de HU-19 con datos reales.
