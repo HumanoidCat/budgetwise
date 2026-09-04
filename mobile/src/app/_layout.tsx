@@ -55,6 +55,7 @@ function PuertaDeAcceso() {
       {/* Alta y edicion de movimiento: se abre encima de las pestanas y no
           lleva barra inferior, por eso vive fuera de (tabs). */}
       <Stack.Screen name="movimiento" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="categorias" />
     </Stack>
   );
 }
