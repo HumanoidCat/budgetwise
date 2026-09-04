@@ -96,3 +96,26 @@ export function montoConSimbolo(cantidad: number): string {
   const signo = cantidad < 0 ? '- ' : '';
   return `₡ ${signo}${conMiles(cantidad)}`;
 }
+
+const MESES_CORTOS = [
+  'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+  'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic',
+];
+
+/** Etiqueta corta de un mes "2026-05" → "May". Para el eje del gráfico. */
+export function etiquetaMes(mesISO: string): string {
+  const [, mes] = mesISO.split('-').map(Number);
+  return MESES_CORTOS[mes - 1] ?? mesISO;
+}
+
+/**
+ * Nombre largo de un mes "2026-05" → "Mayo de 2026". Para encabezados.
+ *
+ * La mayúscula se pone aquí y no con textTransform: 'capitalize', que la pone
+ * en CADA palabra y deja "Septiembre De 2026".
+ */
+export function mesLargo(mesISO: string): string {
+  const [anio, mes] = mesISO.split('-').map(Number);
+  const nombre = MESES[mes - 1] ?? '';
+  return `${nombre.charAt(0).toUpperCase()}${nombre.slice(1)} de ${anio}`;
+}
