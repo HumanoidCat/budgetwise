@@ -87,6 +87,6 @@ cd mobile && npm run lint
 
 | Sprint | Fechas | Meta |
 |---|---|---|
-| Sprint 1 | 31 ago – 6 sep | Flujo core: registro → transacción → saldo, en app |
-| Sprint 2 | 7 – 13 sep | Metas, alertas, IA, dashboard, E2E, observabilidad |
-| Cierre | 14 – 16 sep | APK, ensayo de demo, filminas, presentación |
+| Sprint 1 | 31 ago – 5 sep | Flujo core: registro → transacción → saldo, en app |
+| Sprint 2 | 6 – 12 sep | Metas, alertas, IA, dashboard, E2E, observabilidad |
+| Cierre | 13 – 16 sep | APK, ensayo de demo, filminas, presentación |
