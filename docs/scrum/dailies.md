@@ -55,3 +55,21 @@ Decisiones del PO (miércoles):
 - Evidencia S0-7 en el tablero: la captura se toma tal como está y la evidencia lleva una nota de que el Project fue privado hasta el 1/9, por lo que la tarjeta pasó directo a Done con el merge. No se recrea el paso por In Progress.
 - Nota para la demo: las cuentas creadas antes del merge de HU-03 no tienen categorías por defecto (se crean al registrarse). La demo del 16 usa una cuenta nueva o los datos de semilla.
 - César, sin backlog propio: toma la preparación de datos de demo (script de semilla con cuenta demo, ~3 meses de movimientos, presupuestos y metas) — sirve para la demo del 16 y para probar el gráfico de HU-19 con datos reales.
+
+## Jueves 3 de septiembre
+
+| Integrante | Participó | Resumen |
+|---|---|---|
+| Alejandro Luna | Sí (10:56 am) | Ayer: sin avance, día ocupado fuera del proyecto. Hoy: arranca HU-08 (#15), pantalla de categorías. Bloqueos: ninguno. |
+| César Ubau | Sí (10:58 am) | Ayer: revisó y aprobó #47 y entregó HU-10b en #48; se mergeó #45 (HU-19). Hoy: arranca C-5 (#49, datos de demo); apenas se mergee #47, reapunta #48 a main y dispara el CI. Bloqueos: #48 espera review y no tiene checks hasta que #47 esté en main. |
+| Avril Madrigal | NO envió daily | Sí trabajó: empujó a la rama de HU-07 el rebase sobre main y los tres acuerdos del miércoles (fix de decimales en conMiles con redondeo previo a 2 decimales, package-lock.json versionado, npm ci en el CI) a las 10:49 am. El daily no llegó. |
+| Alejandro Zamora | Sí | Ayer: mergeó #45 y #46, acta del miércoles, respondió la consulta de decimales en el #47, detalló el #49. Hoy: verificación del push de Avril en el #47 (los tres acuerdos cumplidos), review y merge de #47, registro del acta. Bloqueos: ninguno. |
+
+Bloqueos abiertos:
+- #48 espera el merge de #47 (resuelto hoy con el merge) y review de Luna.
+
+Notas del PO (jueves):
+- El push de Avril cumple los tres acuerdos del miércoles y maneja bien el caso borde del redondeo (4200.999 → "4 201", no "4 200,100"). #47 aprobado y mergeado.
+- Avril entregó código pero no envió el daily: el daily no es opcional, es la evidencia de Scrum de la rúbrica.
+- Luna acumula dos días diciendo "arranco HU-08" sin commits. Le quedan HU-08, HU-12 y las pruebas de HU-09/HU-15 con la review del sábado encima: se le pide rama subida con avance visible antes del viernes 12 pm.
+- La review de #48 es de Luna (César la pidió a Avril en el daily; se reasigna a Luna para balancear la participación en reviews).
