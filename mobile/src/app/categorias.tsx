@@ -65,6 +65,9 @@ export default function CategoriasScreen() {
 
       <View style={estilos.tituloFila}>
         <Text style={estilos.titulo}>Categorías</Text>
+        <Pressable onPress={() => router.push('/categoria')} accessibilityRole="button">
+          <Text style={estilos.accion}>+ Nueva</Text>
+        </Pressable>
       </View>
 
       {cargando ? (
@@ -92,7 +95,7 @@ export default function CategoriasScreen() {
           contentContainerStyle={estilos.lista}
           refreshControl={
             <RefreshControl refreshing={recargando} onRefresh={() => cargar('recarga')} />
-          }
+          } 
           renderItem={({ item }) => (
             <View style={estilos.fila}>
               <View style={estilos.filaTexto}>
