@@ -73,3 +73,23 @@ Notas del PO (jueves):
 - Avril entregó código pero no envió el daily: el daily no es opcional, es la evidencia de Scrum de la rúbrica.
 - Luna acumula dos días diciendo "arranco HU-08" sin commits. Le quedan HU-08, HU-12 y las pruebas de HU-09/HU-15 con la review del sábado encima: se le pide rama subida con avance visible antes del viernes 12 pm.
 - La review de #48 es de Luna (César la pidió a Avril en el daily; se reasigna a Luna para balancear la participación en reviews).
+
+## Viernes 4 de septiembre
+
+| Integrante | Participó | Resumen |
+|---|---|---|
+| Alejandro Luna | Sí (10:59 am) | Ayer: subió la rama de HU-08 con tres commits (cliente de API con borrado y reasignación, listado con los cuatro estados, formulario de alta y edición) y abrió el PR #50, ya mergeado. Hoy: cierra HU-08 —al tocar una fila todavía no abre el formulario de edición— prueba nombre duplicado (409) y borrado de categoría con movimientos, y hace la review del #48. Bloqueos: ninguno para el equipo. |
+| César Ubau | Sí (11:33 am) | Ayer: trabajó el #49 (datos de demo). Hoy: sin internet. Bloqueos: sin conexión — el #48 queda sin rebasar y el #49 detenido. |
+| Avril Madrigal | Sí (11:38 am) | Ayer: cerró los tres acuerdos en la rama de HU-07 (decimales, package-lock, npm ci); #47 mergeado. Hoy: terminó HU-13 y abrió el PR #51 con CI en verde — saldo, resumen del mes, gastos por categoría, evolución mensual y tarjeta de recomendaciones de la IA, probado en web contra el API. Sigue con C-1 (#26), el APK con EAS Build. Bloqueos: ninguno. Aviso: el endpoint de recomendaciones trae `source` (`llm`/`rules`); sin API key las redacta una plantilla. |
+| Alejandro Zamora | Sí | Ayer: mergeó #47 y #50, corrigió milestones y fechas de sprints, dejó por escrito el alcance de la IA en el #20. Hoy: review del #51, actas de review/retro y planning del Sprint 2. Bloqueos: ninguno. |
+
+Los tres dailies llegaron antes de las 12 por segunda vez.
+
+Bloqueos abiertos:
+- César sin internet: el #48 no se puede rebasar hoy y el #49 queda detenido. Se reevalúa mañana en la review.
+- Bug en HU-08 (ya mergeada en #50): al tocar una fila del listado no abre el formulario de edición. Lo resuelve Luna hoy en un PR aparte.
+
+Decisiones del PO (viernes):
+- HU-13 entregada con la tarjeta de recomendaciones incluida: con eso el criterio "IA visible en la app" queda cumplido y el objetivo pendiente del Sprint 1 (ver el saldo en la app) se cierra al mergear el #51.
+- Avril sigue con el APK (#26) y NO toma HU-12: el APK es lo único que permite verificar SecureStore y la barra nativa, y si EAS falla hay que saberlo ahora. HU-12 se queda con Luna.
+- `source` de las recomendaciones: se configura ANTHROPIC_API_KEY en Render para la demo. El motor cae a plantillas solo si el LLM falla, así que la red de seguridad ya está en el diseño; se prueba antes del 16 y, si da problemas, se presenta con reglas.
