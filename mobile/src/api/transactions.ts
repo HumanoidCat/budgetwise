@@ -86,3 +86,61 @@ export function actualizarMovimiento(id: number, cambios: Partial<NuevoMovimient
 export function borrarMovimiento(id: number) {
   return api<void>(`/transactions/${id}`, { method: 'DELETE' });
 }
+
+/* ------------------------------------------------------------------------ */
+/* Resumen y evolución mensual — HU-13                                       */
+/* ------------------------------------------------------------------------ */
+
+/** MonthTotalsOut. Lo usan tanto el resumen como la serie mensual. */
+export type TotalesMes = {
+  income: number;
+  expense: number;
+  balance: number;
+  /** YYYY-MM */
+  month: string;
+};
+
+/** CategoryTotalsOut. `category_id` null agrupa lo que no tiene categoría. */
+export type TotalesCategoria = {
+  income: number;
+  expense: number;
+  balance: number;
+  category_id: number | null;
+  category_name: string | null;
+};
+
+/** SummaryOut. */
+export type Resumen = {
+  /** Saldo histórico: todos los ingresos menos todos los gastos. */
+  balance: number;
+  total_income: number;
+  total_expense: number;
+  /** Totales del mes consultado. */
+  month: TotalesMes;
+  by_category: TotalesCategoria[];
+};
+
+/**
+ * GET /transactions/summary — saldo histórico y detalle del mes.
+ *
+ * Sin `month` devuelve el mes actual. Formato YYYY-MM.
+ */
+export function obtenerResumen(month?: string) {
+  const query = month ? `?month=${encodeURIComponent(month)}` : '';
+  return api<Resumen>(`/transactions/summary${query}`);
+}
+
+/** MonthlyOut: la serie viene del mes más viejo al más nuevo. */
+export type Evolucion = {
+  months: TotalesMes[];
+};
+
+/**
+ * GET /transactions/monthly — serie para el gráfico de Inicio.
+ *
+ * Los meses sin movimientos vienen en cero, así que la serie nunca tiene
+ * huecos y el gráfico no necesita rellenarlos.
+ */
+export function evolucionMensual(months = 6) {
+  return api<Evolucion>(`/transactions/monthly?months=${months}`);
+}
