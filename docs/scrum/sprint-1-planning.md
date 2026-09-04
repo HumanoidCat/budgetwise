@@ -2,7 +2,7 @@
 
 **Fecha:** domingo 30 de agosto de 2026, 8:00 pm (Costa Rica)
 **Modalidad:** llamada convocada al grupo del equipo el sábado 29 de agosto, con recordatorio el mismo domingo. Ante la inasistencia de dos integrantes, se realizó entre los presentes y se envió resumen asincrónico al grupo.
-**Duración del sprint:** lunes 31 de agosto – sábado 6 de septiembre de 2026
+**Duración del sprint:** lunes 31 de agosto – sábado 5 de septiembre de 2026
 
 ## Asistencia
 
@@ -47,7 +47,7 @@ Total comprometido: 37 pts.
 2. Daily asincrónica en el grupo, todos los días antes de las 12:00 pm, formato: ayer / hoy / bloqueos.
 3. Bloqueos de más de una hora se comunican de inmediato, no se espera a la daily.
 4. Alejandro Luna revisará el PR de autenticación (#8/#9) como primer contacto con el código y para desbloquear al resto de módulos.
-5. Review + retrospectiva del Sprint 1: sábado 6 de septiembre, 8:00 pm.
+5. Review + retrospectiva del Sprint 1: sábado 5 de septiembre, 8:00 pm.
 
 ## Acciones derivadas de la inasistencia
 
