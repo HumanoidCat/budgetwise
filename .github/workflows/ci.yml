@@ -22,7 +22,7 @@ jobs:
       - name: Lint (ruff)
         run: ruff check app tests alembic
       - name: Pruebas unitarias
-        run: pytest --cov=app --cov-report=term-missing
+        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=80
 
   mobile:
     runs-on: ubuntu-latest
