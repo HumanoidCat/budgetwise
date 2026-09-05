@@ -1,14 +1,15 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "BudgetWise",
+    "slug": "budgetwise",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
+    "scheme": "budgetwise",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.humanoidcat.budgetwise"
     },
     "android": {
       "adaptiveIcon": {
@@ -17,7 +18,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.humanoidcat.budgetwise"
     },
     "web": {
       "output": "static",
@@ -38,6 +40,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e7c0b989-1cd9-49a8-808e-a0e14f625b05"
+      }
+    },
+    "owner": "avmgal"
   }
 }
