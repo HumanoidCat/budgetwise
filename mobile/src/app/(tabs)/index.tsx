@@ -27,6 +27,7 @@ import {
   type Evolucion,
   type Resumen,
 } from '@/api/transactions';
+import { AlertaPresupuesto } from '@/components/alerta-presupuesto';
 import { GraficoCategorias } from '@/components/grafico-categorias';
 import { GraficoMensual } from '@/components/grafico-mensual';
 import { TarjetaRecomendaciones } from '@/components/tarjeta-recomendaciones';
@@ -139,6 +140,9 @@ export default function InicioScreen() {
         <Text style={estilos.saludo}>{nombre ? `Hola, ${nombre}` : 'Hola'}</Text>
         <Text style={estilos.mes}>{mesLargo(resumen.month.month)}</Text>
       </View>
+
+       {/* HU-12: se pinta solo si hay presupuestos en aviso o excedidos. */}
+      <AlertaPresupuesto />
 
       {sinDatos ? (
         <View style={estilos.tarjeta}>
