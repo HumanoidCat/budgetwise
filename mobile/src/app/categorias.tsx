@@ -27,6 +27,7 @@ import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
 
 export default function CategoriasScreen() {
   const router = useRouter();
+
   const [items, setItems] = useState<Categoria[]>([]);
   const [cargando, setCargando] = useState(true);
   const [recargando, setRecargando] = useState(false);
@@ -94,8 +95,8 @@ export default function CategoriasScreen() {
           contentContainerStyle={estilos.lista}
           refreshControl={
             <RefreshControl refreshing={recargando} onRefresh={() => cargar('recarga')} />
-          } 
-                    renderItem={({ item }) => (
+          }
+          renderItem={({ item }) => (
             <Pressable
               onPress={() => router.push(`/categoria?id=${item.id}`)}
               accessibilityRole="button"
@@ -111,6 +112,7 @@ export default function CategoriasScreen() {
     </View>
   );
 }
+
 const estilos = StyleSheet.create({
   raiz: { flex: 1, backgroundColor: Palette.fondo },
   encabezado: { paddingHorizontal: Spacing.three, paddingTop: Spacing.five },
@@ -147,6 +149,7 @@ const estilos = StyleSheet.create({
     padding: Spacing.three,
     marginBottom: Spacing.two,
   },
+  filaPresionada: { opacity: 0.7 },
   filaTexto: { flex: 1, gap: 2 },
   filaNombre: { fontSize: FontSize.cuerpo, fontWeight: '600', color: Palette.texto },
   filaIcono: { fontSize: FontSize.etiqueta, color: Palette.textoSuave },
