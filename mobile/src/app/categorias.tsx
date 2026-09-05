@@ -95,14 +95,17 @@ export default function CategoriasScreen() {
           contentContainerStyle={estilos.lista}
           refreshControl={
             <RefreshControl refreshing={recargando} onRefresh={() => cargar('recarga')} />
-          } 
+          }
           renderItem={({ item }) => (
-            <View style={estilos.fila}>
+            <Pressable
+              onPress={() => router.push(`/categoria?id=${item.id}`)}
+              accessibilityRole="button"
+              style={({ pressed }) => [estilos.fila, pressed && estilos.filaPresionada]}>
               <View style={estilos.filaTexto}>
                 <Text style={estilos.filaNombre}>{item.name}</Text>
                 <Text style={estilos.filaIcono}>{item.icon}</Text>
               </View>
-            </View>
+            </Pressable>
           )}
         />
       )}
@@ -146,6 +149,7 @@ const estilos = StyleSheet.create({
     padding: Spacing.three,
     marginBottom: Spacing.two,
   },
+  filaPresionada: { opacity: 0.7 },
   filaTexto: { flex: 1, gap: 2 },
   filaNombre: { fontSize: FontSize.cuerpo, fontWeight: '600', color: Palette.texto },
   filaIcono: { fontSize: FontSize.etiqueta, color: Palette.textoSuave },
