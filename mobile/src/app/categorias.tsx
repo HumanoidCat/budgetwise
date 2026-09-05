@@ -27,7 +27,6 @@ import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
 
 export default function CategoriasScreen() {
   const router = useRouter();
-
   const [items, setItems] = useState<Categoria[]>([]);
   const [cargando, setCargando] = useState(true);
   const [recargando, setRecargando] = useState(false);
@@ -96,20 +95,22 @@ export default function CategoriasScreen() {
           refreshControl={
             <RefreshControl refreshing={recargando} onRefresh={() => cargar('recarga')} />
           } 
-          renderItem={({ item }) => (
-            <View style={estilos.fila}>
+                    renderItem={({ item }) => (
+            <Pressable
+              onPress={() => router.push(`/categoria?id=${item.id}`)}
+              accessibilityRole="button"
+              style={({ pressed }) => [estilos.fila, pressed && estilos.filaPresionada]}>
               <View style={estilos.filaTexto}>
                 <Text style={estilos.filaNombre}>{item.name}</Text>
                 <Text style={estilos.filaIcono}>{item.icon}</Text>
               </View>
-            </View>
+            </Pressable>
           )}
         />
       )}
     </View>
   );
 }
-
 const estilos = StyleSheet.create({
   raiz: { flex: 1, backgroundColor: Palette.fondo },
   encabezado: { paddingHorizontal: Spacing.three, paddingTop: Spacing.five },

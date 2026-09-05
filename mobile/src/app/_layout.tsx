@@ -56,6 +56,7 @@ function PuertaDeAcceso() {
           lleva barra inferior, por eso vive fuera de (tabs). */}
       <Stack.Screen name="movimiento" options={{ presentation: 'modal' }} />
       <Stack.Screen name="categorias" />
+      <Stack.Screen name="categoria" options={{ presentation: 'modal' }} />
     </Stack>
   );
 }
