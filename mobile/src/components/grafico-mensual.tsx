@@ -75,6 +75,7 @@ export function GraficoMensual({ meses }: { meses: TotalesMes[] }) {
 
 const estilos = StyleSheet.create({
   contenedor: { gap: Spacing.three },
+  vacio: { fontSize: FontSize.cuerpo, color: Palette.textoSuave },
   leyenda: { flexDirection: 'row', gap: Spacing.four },
   leyendaItem: { flexDirection: 'row', alignItems: 'center', gap: Spacing.two },
   muestra: { width: 10, height: 10, borderRadius: 5 },

@@ -34,7 +34,9 @@ function preparar(porCategoria: TotalesCategoria[], totalGasto: number): Fila[] 
     .filter((c) => c.expense > 0)
     .sort((a, b) => b.expense - a.expense);
 
-  const principales = conGasto.slice(0, CUANTAS).map((c, i) => ({
+  // El tipo va anotado: sin él, TypeScript infiere `color` como los cuatro hex
+  // exactos de COLORES y el "Otros" de abajo, que usa otro color, no encaja.
+  const principales: Fila[] = conGasto.slice(0, CUANTAS).map((c, i) => ({
     nombre: c.category_name ?? 'Sin categoría',
     monto: c.expense,
     porcentaje: (c.expense / totalGasto) * 100,
