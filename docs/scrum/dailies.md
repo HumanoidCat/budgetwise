@@ -107,3 +107,22 @@ Hechos del día: se mergearon cinco PRs y el MVP funcional quedó completo — l
 
 Bloqueos abiertos:
 - Ninguno. El dispositivo Android que pedía Avril se resolvió esa misma noche en la review: César y Luna tienen Android y prueban el APK.
+
+## Lunes 7 de septiembre
+
+El domingo 6 se dio libre de daily por ser día de descanso. César entregó igual el PR #59 (C-5, datos de demo), revisado y mergeado ese mismo día.
+
+| Integrante | Participó | Resumen |
+|---|---|---|
+| Alejandro Luna | Sí (10:23 am) | Ayer: avanzó el chequeo de tipos del CI y dejó arreglados y verificados tres errores — los dos de tipos en los gráficos del dashboard (uno era un bug real: el texto de "no hay suficiente historial" salía sin estilo) y un tercero que solo aparece en el CI, porque `expo-env.d.ts` está en el .gitignore y en un clon limpio faltan las declaraciones de los CSS; se resuelve versionando un archivo de una línea. `tsc --noEmit` sale limpio. Hoy: agrega el paso al job de mobile y abre el PR, dejando dicho que tocó dos archivos de Avril y por qué. Bloqueos: ninguno. |
+| César Ubau | Sí (1:05 pm) | Fin de semana: entregó C-5 (#59), el script de semilla — tres meses de movimientos, presupuestos y metas llamando al API, idempotente y con verificación propia de los cuatro criterios de aceptación; documentado en docs/demo.md. Participó en la review y la retro. Hoy: sin issues asignados, se ofrece para las pruebas E2E (#22) o el ensayo de demo (#28). Bloqueos: ninguno propio. Reportó dos cosas del equipo: el #17 sigue abierto aunque está entregado completo, y un error de redacción en las recomendaciones de IA. |
+| Avril Madrigal | NO envió daily | Segunda vez en el sprint. Tiene el APK (#26) y el pase visual, que son el camino crítico del cierre. |
+| Alejandro Zamora | Sí | Revisó y mergeó #58 (configuración de EAS) y #59 (datos de demo). Hoy: cierra el #17, corrige la redacción de las recomendaciones, asigna el trabajo de cierre a César. Bloqueos: ninguno. |
+
+Bloqueos abiertos:
+- Ninguno técnico. Pendiente confirmar el estado del APK con Avril: es lo único del camino crítico sin reporte hoy.
+
+Decisiones del PO (lunes):
+- Se cierra el #17 (metas), entregado completo entre el #39 (API) y el #48 (pantalla). El tablero no puede mostrar como pendiente algo terminado.
+- Redacción de las recomendaciones: confirmado el error que reportó César — `_rule_budgets` armaba "Te pasaste de el presupuesto de X". Lo corrige el PO en el mismo módulo (HU-14 es suyo), con `de_label` aparte para respetar la contracción "del" sin romper el caso del presupuesto general ("Te pasaste de tu presupuesto general").
+- César toma las pruebas E2E (#22), no el ensayo. El ensayo y el guion de la demo son del PM porque son parte de la presentación oral, que se califica aparte. E2E además cierra la rúbrica de pruebas.
