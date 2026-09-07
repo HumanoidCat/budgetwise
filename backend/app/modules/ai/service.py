@@ -81,16 +81,20 @@ def _rule_budgets(db: Session, user_id: int, start, end) -> list[RecommendationO
         status = budget_status(db, user_id, budget, start, end)
         if status.category_name:
             label = f"el presupuesto de {status.category_name}"
+            # "de" + "el" se contrae en "del". Sin esta variable aparte, el
+            # titulo salia "Te pasaste de el presupuesto de Alimentacion".
+            de_label = f"del presupuesto de {status.category_name}"
             freno = f"los gastos de {status.category_name}"
         else:
             label = "tu presupuesto general"
+            de_label = "tu presupuesto general"
             freno = "los gastos"
         if status.status == "exceeded":
             out.append(
                 RecommendationOut(
                     type="presupuesto_excedido",
                     severity="critical",
-                    title=f"Te pasaste de {label}",
+                    title=f"Te pasaste de {de_label}",
                     message=(
                         f"Llevás ₡{status.spent:,.0f} de un límite de ₡{status.monthly_limit:,.0f} "
                         f"({status.percent_used:.0f}%). Intentá frenar {freno} "
