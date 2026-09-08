@@ -15,7 +15,8 @@ import {
 
 import { ApiError } from '@/api/client';
 import { AvisoError, BotonPrimario, Campo } from '@/components/form';
-import { FontSize, Palette, Spacing } from '@/constants/theme';
+import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
+import { Marca } from '@/components/marca';
 import { useAuth } from '@/context/auth';
 
 /** Suficiente para atajar erratas antes de gastar una llamada. El backend valida en serio. */
@@ -53,12 +54,9 @@ export default function LoginScreen() {
       <ScrollView
         contentContainerStyle={estilos.contenido}
         keyboardShouldPersistTaps="handled">
-        <View style={estilos.encabezado}>
-          <Text style={estilos.titulo}>BudgetWise</Text>
-          <Text style={estilos.subtitulo}>Ordená tus ingresos y gastos.</Text>
-        </View>
+        <Marca bajada="Ordená tus ingresos y gastos." />
 
-        <View style={estilos.formulario}>
+        <View style={estilos.tarjeta}>
           <Campo
             etiqueta="Correo"
             value={correo}
@@ -91,10 +89,11 @@ export default function LoginScreen() {
             Iniciar sesión
           </BotonPrimario>
 
-          <Link href="/registro" style={estilos.enlace}>
-            ¿No tenés cuenta? Crear cuenta
-          </Link>
         </View>
+
+        <Link href="/registro" style={estilos.enlace}>
+          ¿No tenés cuenta? Crear cuenta
+        </Link>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -109,25 +108,21 @@ const estilos = StyleSheet.create({
     flexGrow: 1,
     padding: Spacing.four,
     justifyContent: 'center',
-    gap: Spacing.six,
+    gap: Spacing.five,
     maxWidth: 480,
     width: '100%',
-    alignSelf: 'center',
+    // marginHorizontal: 'auto' y no alignSelf: 'center'. En un
+    // contentContainerStyle, alignSelf no centra: el contenido se pega a un
+    // borde y solo se ve completo al desplazarse. (Bug #52)
+    marginHorizontal: 'auto',
   },
-  encabezado: {
-    gap: Spacing.two,
-  },
-  titulo: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: Palette.texto,
-  },
-  subtitulo: {
-    fontSize: FontSize.cuerpo,
-    color: Palette.textoSuave,
-  },
-  formulario: {
+  tarjeta: {
     gap: Spacing.four,
+    backgroundColor: Palette.superficie,
+    borderWidth: 1,
+    borderColor: Palette.borde,
+    borderRadius: Radius.tarjeta,
+    padding: Spacing.four,
   },
   enlace: {
     textAlign: 'center',
