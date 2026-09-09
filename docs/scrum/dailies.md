@@ -93,3 +93,17 @@ Decisiones del PO (viernes):
 - HU-13 entregada con la tarjeta de recomendaciones incluida: con eso el criterio "IA visible en la app" queda cumplido y el objetivo pendiente del Sprint 1 (ver el saldo en la app) se cierra al mergear el #51.
 - Avril sigue con el APK (#26) y NO toma HU-12: el APK es lo único que permite verificar SecureStore y la barra nativa, y si EAS falla hay que saberlo ahora. HU-12 se queda con Luna.
 - `source` de las recomendaciones: se configura ANTHROPIC_API_KEY en Render para la demo. El motor cae a plantillas solo si el LLM falla, así que la red de seguridad ya está en el diseño; se prueba antes del 16 y, si da problemas, se presenta con reglas.
+
+## Sábado 5 de septiembre
+
+| Integrante | Participó | Resumen |
+|---|---|---|
+| Alejandro Luna | Sí | Ayer: HU-08 mergeada (#50). Hoy: tres PRs mergeados — #55 (fix del tap en las filas, corregido con lo que salió del review), #56 (HU-12, banner de alertas verificado contra Render con un presupuesto en aviso y otro excedido) y #57 (HU-09, pruebas de integración entre módulos y `--cov-fail-under=80` en el CI: 142 pruebas, 97,48% de cobertura). Con eso cerró el arrastre del Sprint 1. Sigue con `tsc --noEmit` en el CI de mobile, arreglando él los dos errores de tipos del #51. Bloqueos: ninguno. |
+| Avril Madrigal | Sí | Ayer: HU-13 entregada (#51). Hoy: arrancó C-1 — proyecto de EAS creado, `eas.json` y `app.json` configurados (nombre BudgetWise, package com.humanoidcat.budgetwise) y primer APK compilado. Detectó que el primer build salió apuntando a localhost porque el `.env` local no viaja al build de EAS; lo corrige declarando `EXPO_PUBLIC_API_URL` en el perfil de EAS. Después arranca el pase visual. Bloqueos: ninguno; pide un Android del equipo para instalar el APK. |
+| César Ubau | No | Sin conexión a internet durante el día. Se reincorporó por la noche para la review. |
+| Alejandro Zamora | Sí | Revisó y mergeó #55, #56, #57 y #48; rebasó la rama de César para desbloquear el #48; corrigió milestones y fechas; preparó el acta de review y el planning del Sprint 2. Bloqueos: ninguno. |
+
+Hechos del día: se mergearon cinco PRs y el MVP funcional quedó completo — las 6 pantallas de la app funcionando y el Sprint 1 cerrado sin arrastre.
+
+Bloqueos abiertos:
+- Ninguno. El dispositivo Android que pedía Avril se resolvió esa misma noche en la review: César y Luna tienen Android y prueban el APK.

@@ -2,16 +2,18 @@
 
 **Fecha:** sábado 5 de septiembre de 2026, 8:00 pm (Costa Rica)
 **Duración del sprint:** lunes 31 de agosto – sábado 5 de septiembre de 2026
-**Modalidad:** llamada del equipo. Facilita: Alejandro Zamora (Scrum Master).
+**Modalidad:** llamada del equipo por WhatsApp. Facilita: Alejandro Zamora (Scrum Master).
 
 ## Asistencia
 
 | Integrante | Asistencia |
 |---|---|
-| Alejandro Zamora | |
-| Alejandro Luna | |
-| César Ubau | |
-| Avril Madrigal | |
+| Alejandro Zamora | Presente |
+| Alejandro Luna | Presente |
+| César Ubau | Presente |
+| Avril Madrigal | Presente |
+
+Primera ceremonia del proyecto con el equipo completo.
 
 ---
 
@@ -95,6 +97,14 @@ Lo que hay que mirar no es el conteo de issues cerrados, sino qué se puede ense
 - El objetivo del sprint se planificó con una dependencia fuera del sprint: el saldo necesitaba el dashboard, y el dashboard estaba en el Sprint 2. Se cumplió solo porque alguien adelantó trabajo, no porque estuviera bien planeado.
 - La carga quedó muy despareja: un integrante entregó nueve historias y otro arrastró la suya.
 
+## Aportes del equipo
+
+- Los cuatro reportaron carga de trabajo adecuada: nadie está sobrecargado ni con historias trabadas.
+- César recuperó conexión y retoma su trabajo pendiente (C-5, datos de demo).
+- Luna se ofreció como apoyo para lo que haga falta una vez cerrado lo suyo.
+- Se resolvió en la llamada el bloqueo del dispositivo Android: César y Luna tienen Android y ambos pueden instalar el APK y probar la app, incluida la persistencia de sesión que no se puede verificar en web ni desde el iPhone de Avril.
+- El equipo planteó que, si el cierre avanza bien, se aproveche el margen para sumar funcionalidad y ampliar las pruebas, en vez de dejar la app en el mínimo del MVP. Se acepta como objetivo secundario, sujeto a la regla de abajo.
+
 ## Qué se cambia para el Sprint 2
 
 1. **Dailies antes de las 12, sin excepción.** Entregar código no sustituye la daily: es la evidencia de Scrum que se califica.
@@ -107,4 +117,14 @@ Lo que hay que mirar no es el conteo de issues cerrados, sino qué se puede ense
 
 | Acción | Responsable | Fecha |
 |---|---|---|
-| | | |
+| Generar el APK con la URL del API declarada en el perfil de EAS y compartirlo al equipo | Avril Madrigal | 6 sep |
+| Instalar el APK en Android y verificar persistencia de sesión y barra nativa | César Ubau y Alejandro Luna | 7 sep |
+| Pase visual de login, registro e Inicio, más el centrado en pantalla ancha y el error de correo en inglés | Avril Madrigal | 8 sep |
+| Chequeo de tipos (`tsc --noEmit`) en el job de mobile del CI, con los dos fixes de tipos | Alejandro Luna | 7 sep |
+| Script de datos de demo (C-5, #49) | César Ubau | 9 sep |
+| Filminas de la presentación (C-2, #27) | Alejandro Zamora | 10 sep |
+| Corte de control: revisar avance real, recortar o reasignar lo que esté en riesgo | Todo el equipo | 9 sep |
+
+### Sobre sumar funcionalidad
+
+Se acordó que el equipo puede proponer funcionalidad adicional **solo después** de que estén cerrados el APK, los datos de demo, el pase visual y las filminas. Toda historia nueva pasa por el PO, entra al backlog como issue y no puede tocar el flujo que se va a demostrar el 16. Si el corte del miércoles muestra algo en riesgo, no se abre ninguna.

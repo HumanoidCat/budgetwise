@@ -8,51 +8,46 @@
 
 | Integrante | Asistencia |
 |---|---|
-| Alejandro Zamora | |
-| Alejandro Luna | |
-| César Ubau | |
-| Avril Madrigal | |
+| Alejandro Zamora | Presente |
+| Alejandro Luna | Presente |
+| César Ubau | Presente |
+| Avril Madrigal | Presente |
 
 ## Objetivo del sprint
 
-Que la app quede completa y presentable: las seis pantallas funcionando contra el API desplegado, con el saldo, el gráfico y las recomendaciones de la IA visibles, y el APK instalado en un teléfono. Al cerrar este sprint la demo del 16 tiene que poder ensayarse de punta a punta.
+La funcionalidad del MVP quedó terminada dentro del Sprint 1: las seis pantallas funcionan contra el API desplegado. Este sprint es de **cierre**, no de construcción.
 
-Traducción práctica: **el 12 de septiembre no debe quedar ninguna funcionalidad pendiente**, solo pulido, ensayo y filminas.
+Objetivo: que el 12 de septiembre la demo se pueda ensayar de punta a punta sin sorpresas, con el APK instalado y probado en Android real, datos de demo cargados, las pantallas pulidas y las filminas listas.
 
 ## Historias comprometidas
 
-| Issue | Historia | Responsable | Pts | Prioridad |
+| Issue | Tarea | Responsable | Pts | Prioridad |
 |---|---|---|---|---|
-| #20 | HU-13 Dashboard de Inicio: saldo, resumen del mes, gráfico de evolución **y tarjeta de recomendaciones de la IA** | Avril Madrigal | 5 | P0 |
-| #41 | HU-10b Pantalla de metas de ahorro (PR #48 en curso) | César Ubau | 3 | P0 |
-| #19 | HU-12 Alertas de presupuesto en la app | Alejandro Luna | 3 | P0 |
-| #16 | HU-09 Pruebas de integración entre módulos + umbral de cobertura en CI (arrastre) | Alejandro Luna | 3 | P1 |
+| #26 | C-1 APK con EAS Build, instalado y probado en Android real | Avril Madrigal | 3 | P0 |
+| — | Pase visual: login, registro e Inicio, más el centrado en pantalla ancha (#52) y el error de correo en inglés (#53) | Avril Madrigal | 3 | P0 |
+| #49 | C-5 Script de datos de demo | César Ubau | 2 | P0 |
 | #22 | HU-15 Pruebas E2E del flujo core | César Ubau | 5 | P1 |
-| #49 | C-5 Script de datos de demo | César Ubau | 2 | P1 |
-| #26 | C-1 APK con EAS Build instalado en teléfonos | Avril Madrigal | 3 | P0 |
+| — | Chequeo de tipos (`tsc --noEmit`) en el CI de mobile + dos fixes de tipos | Alejandro Luna | 2 | P1 |
 | #27 | C-2 Filminas de la presentación (máx. 5) | Alejandro Zamora | 3 | P1 |
+| #28 | C-3 Ensayo de la demo en vivo con guion | Alejandro Zamora | 3 | P1 |
+| #29 | C-4 Hardening: bugs, estados vacíos, mensajes de error | Alejandro Zamora | 3 | P1 |
 
-Total comprometido: 27 pts.
+Total comprometido: 24 pts.
 
 ### Notas de reparto
 
-- **HU-13 es la historia más importante del proyecto.** Cierra el objetivo pendiente del Sprint 1 (ver el saldo en la app), suma los 5 pts de dashboard de la rúbrica y es la única forma de que los 6 pts de IA cuenten. Va primero, antes que cualquier otra cosa de Avril.
-- **HU-15 pasa de Luna a César.** Luna arrastra HU-09 y tiene HU-12; César cerró todo su backlog y es quien más rápido entrega. Las pruebas E2E cruzan todos los módulos y él los conoce completos.
-- **El APK no se deja para el final.** EAS Build puede fallar por configuración y no se descubre eso el día 15. Se genera apenas el dashboard esté en main, aunque falte pulido.
-
-## Fuera de este sprint (semana de cierre, 13 – 16 sep)
-
-| Issue | Tarea | Responsable |
-|---|---|---|
-| #28 | C-3 Ensayo de la demo en vivo con guion | Alejandro Zamora |
-| #29 | C-4 Hardening: bugs, estados vacíos, mensajes de error | Alejandro Zamora |
+- **El APK va primero.** Es lo más riesgoso que queda: el primer build salió apuntando a `localhost` porque el `.env` local no viaja al build de EAS. Ese es justamente el tipo de error que no se puede descubrir el día 15.
+- **Prueba en Android real.** César y Luna tienen Android y prueban el APK apenas esté: persistencia de sesión (SecureStore) y barra nativa, que no se verifican ni en web ni en el iPhone de Avril.
+- **Luna queda como apoyo.** Cerró todo su backlog del Sprint 1; después del chequeo de tipos toma lo que salga del pulido o de las pruebas en dispositivo.
+- **El ensayo y el hardening se adelantan** a este sprint: la funcionalidad ya está lista, así que no hay razón para dejarlos a la semana de cierre.
 
 ## Riesgos
 
 | Riesgo | Impacto | Mitigación |
 |---|---|---|
-| HU-13 se entrega sin la tarjeta de IA | Se pierden 6 pts de rúbrica con el trabajo ya hecho | Criterio escrito en el issue #20; se verifica en la review del PR |
-| El APK falla en EAS y se descubre tarde | No hay demo en teléfono | Se genera en cuanto el dashboard entre a main, no al final |
+| El APK falla en EAS o la sesión no persiste en Android | No hay demo en teléfono | Se genera y se prueba en Android real esta misma semana; César y Luna lo instalan |
+| El pase visual toca lógica y rompe pantallas que funcionan | Se pierde funcionalidad ya entregada | Solo estilos y composición, en PR aparte, con tope el lunes 8 |
+| Se abre funcionalidad nueva antes de cerrar la entrega | Riesgo directo sobre la demo | Ninguna historia nueva antes de cerrar APK, datos de demo, pulido y filminas |
 | Render duerme el servicio (plan free, 15 min) | La demo arranca en blanco | Se despierta el API antes de presentar; el guion lo incluye como primer paso |
 | La base de datos gratuita de Render expira ~30 sep | Ninguno para esta entrega | Fuera de ventana; documentado en docs/deploy.md |
 | Carga despareja del equipo | Un integrante bloquea la entrega | Corte del miércoles 9: lo que esté en riesgo se reasigna ahí |
@@ -65,3 +60,4 @@ Total comprometido: 27 pts.
 4. El PM asigna revisor al abrir cada PR, repartiendo la carga de revisiones.
 5. **Corte de control: miércoles 9 de septiembre.** Se revisa el avance real y se recorta o reasigna lo que esté en riesgo.
 6. Merge siempre con squash.
+7. **Funcionalidad adicional**: el equipo puede proponer historias nuevas para que la app no quede en el mínimo del MVP, pero solo entran una vez cerrados el APK, los datos de demo, el pase visual y las filminas. Pasan por el PO, se registran como issue y no tocan el flujo que se demuestra el 16.
