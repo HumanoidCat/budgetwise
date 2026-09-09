@@ -116,13 +116,32 @@ El domingo 6 se dio libre de daily por ser día de descanso. César entregó igu
 |---|---|---|
 | Alejandro Luna | Sí (10:23 am) | Ayer: avanzó el chequeo de tipos del CI y dejó arreglados y verificados tres errores — los dos de tipos en los gráficos del dashboard (uno era un bug real: el texto de "no hay suficiente historial" salía sin estilo) y un tercero que solo aparece en el CI, porque `expo-env.d.ts` está en el .gitignore y en un clon limpio faltan las declaraciones de los CSS; se resuelve versionando un archivo de una línea. `tsc --noEmit` sale limpio. Hoy: agrega el paso al job de mobile y abre el PR, dejando dicho que tocó dos archivos de Avril y por qué. Bloqueos: ninguno. |
 | César Ubau | Sí (1:05 pm) | Fin de semana: entregó C-5 (#59), el script de semilla — tres meses de movimientos, presupuestos y metas llamando al API, idempotente y con verificación propia de los cuatro criterios de aceptación; documentado en docs/demo.md. Participó en la review y la retro. Hoy: sin issues asignados, se ofrece para las pruebas E2E (#22) o el ensayo de demo (#28). Bloqueos: ninguno propio. Reportó dos cosas del equipo: el #17 sigue abierto aunque está entregado completo, y un error de redacción en las recomendaciones de IA. |
-| Avril Madrigal | NO envió daily | Segunda vez en el sprint. Tiene el APK (#26) y el pase visual, que son el camino crítico del cierre. |
+| Avril Madrigal | Sí (tarde) | Ayer: sin avances. Hoy: pase visual de login, registro e Inicio con los bugs #52 (centrado en pantalla ancha) y #53 (error de correo en inglés). **APK compilado y disponible**, apuntando al backend de Render; la configuración va en el #58. Lo publicó por enlace de EAS para instalar desde el celular. Pidió a César y a Luna que confirmen tres cosas: que instale y abra, que al cerrar y reabrir siga la sesión iniciada (prueba de SecureStore, que en web no se puede verificar) y que la barra de pestañas se vea bien. **No da C-1 por cerrada hasta que alguien lo instale**: lo verificado es que compila, no que corra en un teléfono. Bloqueos: ninguno. |
 | Alejandro Zamora | Sí | Revisó y mergeó #58 (configuración de EAS) y #59 (datos de demo). Hoy: cierra el #17, corrige la redacción de las recomendaciones, asigna el trabajo de cierre a César. Bloqueos: ninguno. |
 
 Bloqueos abiertos:
-- Ninguno técnico. Pendiente confirmar el estado del APK con Avril: es lo único del camino crítico sin reporte hoy.
+- El APK ya está compilado y disponible, pero espera instalación y verificación en Android. Depende de César y Luna, que se comprometieron a eso en la review del sábado.
 
 Decisiones del PO (lunes):
 - Se cierra el #17 (metas), entregado completo entre el #39 (API) y el #48 (pantalla). El tablero no puede mostrar como pendiente algo terminado.
 - Redacción de las recomendaciones: confirmado el error que reportó César — `_rule_budgets` armaba "Te pasaste de el presupuesto de X". Lo corrige el PO en el mismo módulo (HU-14 es suyo), con `de_label` aparte para respetar la contracción "del" sin romper el caso del presupuesto general ("Te pasaste de tu presupuesto general").
 - César toma las pruebas E2E (#22), no el ensayo. El ensayo y el guion de la demo son del PM porque son parte de la presentación oral, que se califica aparte. E2E además cierra la rúbrica de pruebas.
+
+## Martes 8 de septiembre
+
+**Nadie envió daily.**
+
+| Integrante | Participó | Estado real (según PRs y repositorio) |
+|---|---|---|
+| Avril Madrigal | No envió | Entregó el pase visual en el PR #61: resolvió #52 y #53, agregó el componente Marca y sumó los tonos nuevos al verificador de contraste con sus ratios. Revisado, aprobado y mergeado hoy. |
+| Alejandro Luna | No envió | Entregó el chequeo de tipos en el PR #62. Revisado, aprobado y mergeado hoy. Quedó pendiente el detalle de los saltos de línea finales, que se acordó meter en su próximo PR. |
+| César Ubau | No envió | Sin PR ni reporte desde el #59 del sábado. Tiene asignadas las pruebas E2E (#22). |
+| Alejandro Zamora | Sí | Revisó y mergeó #61 y #62. |
+
+Con esos dos merges, el pase visual y el chequeo de tipos quedaron en main: de aquí en adelante ningún PR entra con un estilo inexistente o una propiedad mal tipada.
+
+Bloqueos abiertos:
+- **C-1 en riesgo.** El APK está disponible desde ayer y nadie lo ha instalado. Es lo único del cierre que no se puede verificar de otra forma; ni el build web ni el iPhone de Avril sirven para probar la persistencia de sesión.
+- **HU-15 (#22) sin reporte.** Las pruebas E2E de César no tienen avance conocido desde el sábado.
+
+Nota: el corte de control acordado en la planning es mañana miércoles 9. La disciplina de dailies se cayó justo la víspera.
