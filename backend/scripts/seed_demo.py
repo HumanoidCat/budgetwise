@@ -88,6 +88,13 @@ GASTOS = {
     ],
 }
 
+# Límite mensual GENERAL (sin categoría). Es el que responde «cuánto me queda
+# este mes», que es el titular del dashboard. Sin este presupuesto el titular
+# cae al saldo y la demo no muestra la pantalla principal como se diseñó.
+# 420 000 contra 337 000 de gasto sembrado -> ~80 %, la barra se ve trabajada
+# sin estar en rojo.
+PRESUPUESTO_GENERAL = 420_000
+
 # categoría -> límite mensual
 PRESUPUESTOS = {
     "Alimentación": 150_000,
@@ -212,6 +219,8 @@ def sembrar_movimientos(api: Api, categorias: dict[str, int]) -> int:
 
 
 def sembrar_presupuestos(api: Api, categorias: dict[str, int]) -> int:
+    # Primero el general: category_id en None es lo que lo marca como global.
+    api.pedir("PUT", "/budgets", json={"category_id": None, "monthly_limit": PRESUPUESTO_GENERAL})
     for nombre, limite in PRESUPUESTOS.items():
         if nombre not in categorias:
             sys.exit(f"  falta la categoría por defecto «{nombre}»")
@@ -220,7 +229,7 @@ def sembrar_presupuestos(api: Api, categorias: dict[str, int]) -> int:
             "/budgets",
             json={"category_id": categorias[nombre], "monthly_limit": limite},
         )
-    return len(PRESUPUESTOS)
+    return len(PRESUPUESTOS) + 1
 
 
 def sembrar_metas(api: Api) -> int:

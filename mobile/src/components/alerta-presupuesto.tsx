@@ -9,6 +9,12 @@
  * (HU-13, de Avril) solo suma una línea, y un fallo de /budgets/status no
  * puede tumbar el saldo ni el gráfico.
  *
+ * Desde que el titular del dashboard muestra «lo que queda del mes», esa
+ * pantalla ya pide /budgets/status para sí misma. Para no llamar dos veces al
+ * mismo endpoint puede pasar las alertas por `alertas`. Sin esa prop el
+ * componente sigue pidiéndolas solo, que es como lo diseñó Avril y como lo
+ * usa cualquier otra pantalla.
+ *
  * El umbral del 80% lo decide el backend (WARNING_THRESHOLD en budgets). Acá
  * no se recalcula nada: se muestra lo que viene en `alerts`.
  */
@@ -31,9 +37,16 @@ const NIVEL: Record<Exclude<EstadoPresupuesto, 'ok'>, { palabra: string; color: 
   exceeded: { palabra: 'Excedido', color: Palette.gasto },
 };
 
-export function AlertaPresupuesto() {
-  const [alertas, setAlertas] = useState<PresupuestoConEstado[]>([]);
+type Props = {
+  /** Alertas ya cargadas por la pantalla. Sin esto, el componente las pide. */
+  alertas?: PresupuestoConEstado[];
+};
+
+export function AlertaPresupuesto({ alertas: alertasPorProp }: Props = {}) {
+  const [alertasPropias, setAlertas] = useState<PresupuestoConEstado[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const lasTraeLaPantalla = alertasPorProp !== undefined;
+  const alertas = alertasPorProp ?? alertasPropias;
 
   const cargar = useCallback(async () => {
     setError(null);
@@ -50,8 +63,8 @@ export function AlertaPresupuesto() {
   // cada vez que el dashboard toma el foco, no solo al montar.
   useFocusEffect(
     useCallback(() => {
-      cargar();
-    }, [cargar]),
+      if (!lasTraeLaPantalla) cargar();
+    }, [cargar, lasTraeLaPantalla]),
   );
 
   if (error) {
