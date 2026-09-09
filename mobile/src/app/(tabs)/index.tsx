@@ -136,12 +136,17 @@ export default function InicioScreen() {
           }}
         />
       }>
-      <View>
-        <Text style={estilos.saludo}>{nombre ? `Hola, ${nombre}` : 'Hola'}</Text>
-        <Text style={estilos.mes}>{mesLargo(resumen.month.month)}</Text>
+      <View style={estilos.encabezado}>
+        <View style={estilos.marcaChica}>
+          <Text style={estilos.marcaColon}>₡</Text>
+        </View>
+        <View style={estilos.encabezadoTexto}>
+          <Text style={estilos.saludo}>{nombre ? `Hola, ${nombre}` : 'Hola'}</Text>
+          <Text style={estilos.mes}>{mesLargo(resumen.month.month)}</Text>
+        </View>
       </View>
 
-       {/* HU-12: se pinta solo si hay presupuestos en aviso o excedidos. */}
+      {/* HU-12: se pinta solo si hay presupuestos en aviso o excedidos. */}
       <AlertaPresupuesto />
 
       {sinDatos ? (
@@ -156,22 +161,23 @@ export default function InicioScreen() {
         </View>
       ) : (
         <>
-          {/* Saldo histórico, no el del mes: es el número que la gente busca. */}
-          <View style={estilos.tarjeta}>
-            <Text style={estilos.etiqueta}>Saldo actual</Text>
+          {/* Saldo histórico, no el del mes: es el número que la gente busca,
+              así que es lo único de la pantalla en color pleno. */}
+          <View style={estilos.tarjetaSaldo}>
+            <Text style={estilos.etiquetaSaldo}>Saldo actual</Text>
             <Text style={estilos.saldo}>{montoConSimbolo(resumen.balance)}</Text>
           </View>
 
           <View style={estilos.parEnFila}>
-            <View style={[estilos.tarjeta, estilos.mitad]}>
-              <Text style={estilos.etiqueta}>Ingresos del mes</Text>
+            <View style={[estilos.tarjetaTinte, estilos.mitad, estilos.tinteIngreso]}>
+              <Text style={[estilos.etiqueta, { color: Palette.ingreso }]}>Ingresos del mes</Text>
               <Text style={[estilos.montoMedio, { color: Palette.ingreso }]}>
                 + {montoConSimbolo(resumen.month.income).replace('₡ ', '')}
               </Text>
             </View>
 
-            <View style={[estilos.tarjeta, estilos.mitad]}>
-              <Text style={estilos.etiqueta}>Gastos del mes</Text>
+            <View style={[estilos.tarjetaTinte, estilos.mitad, estilos.tinteGasto]}>
+              <Text style={[estilos.etiqueta, { color: Palette.gasto }]}>Gastos del mes</Text>
               <Text style={[estilos.montoMedio, { color: Palette.gasto }]}>
                 - {montoConSimbolo(resumen.month.expense).replace('₡ ', '')}
               </Text>
@@ -213,8 +219,22 @@ const estilos = StyleSheet.create({
     gap: Spacing.three,
     maxWidth: 560,
     width: '100%',
-    alignSelf: 'center',
+    // marginHorizontal: 'auto' y no alignSelf: 'center'. En un
+    // contentContainerStyle, alignSelf no centra: el contenido se pega a un
+    // borde y solo se ve completo al desplazarse. (Bug #52)
+    marginHorizontal: 'auto',
   },
+  encabezado: { flexDirection: 'row', alignItems: 'center', gap: Spacing.three },
+  encabezadoTexto: { flex: 1 },
+  marcaChica: {
+    width: 40,
+    height: 40,
+    borderRadius: Radius.campo,
+    backgroundColor: Palette.primario,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  marcaColon: { fontSize: 20, fontWeight: '700', color: Palette.primarioTexto },
   saludo: { fontSize: FontSize.titulo, fontWeight: '700', color: Palette.texto },
   mes: { fontSize: FontSize.etiqueta, color: Palette.textoSuave },
   tarjeta: {
@@ -225,10 +245,24 @@ const estilos = StyleSheet.create({
     borderRadius: Radius.tarjeta,
     padding: Spacing.three,
   },
+  tarjetaSaldo: {
+    gap: Spacing.one,
+    backgroundColor: Palette.primario,
+    borderRadius: Radius.tarjeta,
+    padding: Spacing.four,
+  },
+  etiquetaSaldo: { fontSize: FontSize.etiqueta, color: Palette.primarioTexto, opacity: 0.85 },
+  tarjetaTinte: {
+    gap: Spacing.two,
+    borderRadius: Radius.tarjeta,
+    padding: Spacing.three,
+  },
+  tinteIngreso: { backgroundColor: Palette.ingresoSuave },
+  tinteGasto: { backgroundColor: Palette.gastoSuave },
   parEnFila: { flexDirection: 'row', gap: Spacing.three },
   mitad: { flex: 1 },
   etiqueta: { fontSize: FontSize.etiqueta, color: Palette.textoSuave },
-  saldo: { fontSize: FontSize.monto, fontWeight: '700', color: Palette.texto },
+  saldo: { fontSize: 34, fontWeight: '700', color: Palette.primarioTexto },
   montoMedio: { fontSize: FontSize.subtitulo, fontWeight: '700' },
   seccion: {
     gap: Spacing.three,

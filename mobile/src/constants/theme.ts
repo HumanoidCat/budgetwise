@@ -111,8 +111,12 @@ export const Palette = {
   primarioSuave: '#EAF0FE',
   /** Dinero que entra */
   ingreso: '#0F7A44',
+  /** Fondo suave para bloques de ingreso. `ingreso` encima da 4.82:1. */
+  ingresoSuave: '#E8F5EE',
   /** Dinero que sale, y errores */
   gasto: '#B32D33',
+  /** Fondo suave para bloques de gasto y avisos. `gasto` encima da 5.50:1. */
+  gastoSuave: '#FDECEC',
   /** Avisos que no son error */
   advertencia: '#8A5300',
   /** Controles inactivos */
