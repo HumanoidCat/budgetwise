@@ -1,0 +1,30 @@
+# Normaliza los finales de línea para todo el equipo.
+#
+# El problema que resuelve: el repo guarda LF, pero en Windows los archivos
+# terminaron con CRLF y git marcaba 119 archivos como modificados sin que
+# nadie los hubiera tocado. Verificado: 0 cambios reales de contenido.
+#
+# `text=auto` hace que git compare el contenido NORMALIZADO, así que la
+# diferencia CRLF/LF deja de aparecer como cambio. `eol=lf` deja LF en el
+# disco al clonar, que es lo que ya tiene el repo.
+
+* text=auto eol=lf
+
+# Binarios: que git no los toque nunca.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.keystore binary
+*.jks binary
+
+# Scripts de Windows: estos SÍ necesitan CRLF para ejecutarse bien.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
