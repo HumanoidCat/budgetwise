@@ -63,6 +63,8 @@ EXIGIDOS = [
     ("gasto",         "fondo",         4.5, "Monto de gasto y errores"),
     ("gasto",         "superficie",    4.5, "Monto de gasto sobre tarjeta"),
     ("advertencia",   "superficie",    4.5, "Avisos que no son error"),
+    ("ingreso",       "ingresoSuave",  4.5, "Monto de ingreso sobre su bloque"),
+    ("gasto",         "gastoSuave",    4.5, "Monto de gasto sobre su bloque"),
     ("bordeCampo",    "superficie",    3.0, "Borde de campo de formulario"),
     ("bordeCampo",    "fondo",         3.0, "Borde de campo sobre la pantalla"),
 ]

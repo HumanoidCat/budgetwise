@@ -18,7 +18,8 @@ import {
 
 import { ApiError } from '@/api/client';
 import { AvisoError, BotonPrimario, Campo } from '@/components/form';
-import { FontSize, Palette, Spacing } from '@/constants/theme';
+import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
+import { Marca } from '@/components/marca';
 import { useAuth } from '@/context/auth';
 
 const CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,12 +66,13 @@ export default function RegistroScreen() {
       <ScrollView
         contentContainerStyle={estilos.contenido}
         keyboardShouldPersistTaps="handled">
+        <Marca tamano={48} conNombre={false} />
         <View style={estilos.encabezado}>
           <Text style={estilos.titulo}>Crear cuenta</Text>
           <Text style={estilos.subtitulo}>Se crean nueve categorías para empezar.</Text>
         </View>
 
-        <View style={estilos.formulario}>
+        <View style={estilos.tarjeta}>
           <Campo
             etiqueta="Nombre"
             value={nombre}
@@ -118,10 +120,11 @@ export default function RegistroScreen() {
             Crear cuenta
           </BotonPrimario>
 
-          <Link href="/login" style={estilos.enlace}>
-            ¿Ya tenés cuenta? Iniciar sesión
-          </Link>
         </View>
+
+        <Link href="/login" style={estilos.enlace}>
+          ¿Ya tenés cuenta? Iniciar sesión
+        </Link>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -136,16 +139,18 @@ const estilos = StyleSheet.create({
     flexGrow: 1,
     padding: Spacing.four,
     justifyContent: 'center',
-    gap: Spacing.five,
+    gap: Spacing.four,
     maxWidth: 480,
     width: '100%',
-    alignSelf: 'center',
+    // Ver la nota del bug #52 en login.tsx.
+    marginHorizontal: 'auto',
   },
   encabezado: {
     gap: Spacing.two,
+    alignItems: 'center',
   },
   titulo: {
-    fontSize: FontSize.monto,
+    fontSize: 26,
     fontWeight: '700',
     color: Palette.texto,
   },
@@ -153,8 +158,13 @@ const estilos = StyleSheet.create({
     fontSize: FontSize.cuerpo,
     color: Palette.textoSuave,
   },
-  formulario: {
+  tarjeta: {
     gap: Spacing.four,
+    backgroundColor: Palette.superficie,
+    borderWidth: 1,
+    borderColor: Palette.borde,
+    borderRadius: Radius.tarjeta,
+    padding: Spacing.four,
   },
   enlace: {
     textAlign: 'center',
