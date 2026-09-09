@@ -19,6 +19,9 @@ export default function Pantalla() {
       <Pressable onPress={() => router.push('/categorias')} accessibilityRole="button">
         <Text style={estilos.enlace}>Categorías</Text>
       </Pressable>
+      <Pressable onPress={() => router.push('/presupuestos')} accessibilityRole="button">
+        <Text style={estilos.enlace}>Presupuestos</Text>
+      </Pressable>
       <Text style={estilos.nota}>Perfil, moneda y cierre de sesion.</Text>
       <Text style={estilos.etiqueta}>Sprint 2</Text>
     </View>
