@@ -43,5 +43,12 @@ jobs:
       - run: npm ci
       - name: Lint
         run: npm run lint --if-present
+      # expo lint NO verifica tipos. Sin este paso, un estilo o una propiedad
+      # que no existe pasa el CI y se descubre en pantalla.
+      # Sin --if-present a propósito: si alguien borra el script, el CI tiene
+      # que fallar y no seguir en verde sin revisar nada.
+      - name: Tipos
+        run: npm run typecheck
       - name: Pruebas unitarias
         run: npm test --if-present -- --watchAll=false
+        
