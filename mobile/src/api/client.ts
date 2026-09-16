@@ -5,10 +5,62 @@
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8001';
 
+/**
+ * Cuánto se espera antes de rendirse con una petición.
+ *
+ * El backend vive en el plan gratis de Render, que duerme el servicio tras
+ * ~15 minutos sin tráfico. Despertarlo tarda cerca de 50 segundos, así que el
+ * límite tiene que ser generoso: cortar a los 10 s convertiría un arranque en
+ * frío normal en un error. 60 s deja margen y aun así garantiza que la app
+ * nunca se queda colgada para siempre.
+ */
+const TIMEOUT_MS = 60_000;
+
+/** A partir de aquí se le avisa a la persona que esto va para largo. */
+const DEMORA_MS = 3_000;
+
 let authToken: string | null = null;
 
 export function setAuthToken(token: string | null) {
   authToken = token;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Avisos hacia la app                                                       */
+/* ------------------------------------------------------------------------ */
+
+/**
+ * Peticiones en vuelo que ya pasaron el umbral de demora.
+ *
+ * Se cuenta en vez de usar un booleano porque el dashboard dispara varias
+ * llamadas a la vez: con un booleano, la primera en terminar apagaría el aviso
+ * mientras las otras siguen esperando.
+ */
+let lentasEnVuelo = 0;
+let avisarDemora: ((tardando: boolean) => void) | null = null;
+
+/** La app se suscribe para mostrar «el servidor está despertando». */
+export function escucharDemora(cb: ((tardando: boolean) => void) | null) {
+  avisarDemora = cb;
+}
+
+function marcarLenta(delta: number) {
+  const antes = lentasEnVuelo;
+  lentasEnVuelo = Math.max(0, lentasEnVuelo + delta);
+  if (antes === 0 && lentasEnVuelo > 0) avisarDemora?.(true);
+  if (antes > 0 && lentasEnVuelo === 0) avisarDemora?.(false);
+}
+
+let avisarSesionVencida: (() => void) | null = null;
+
+/**
+ * La app se suscribe para cerrar sesión cuando el backend rechaza el token.
+ *
+ * El token dura 60 minutos. Sin esto, cuando vence, cada pantalla muestra un
+ * error y nada devuelve a la persona al login: queda atrapada.
+ */
+export function escucharSesionVencida(cb: (() => void) | null) {
+  avisarSesionVencida = cb;
 }
 
 /**
@@ -59,8 +111,13 @@ function traducir(msg: string): string | null {
   return null;
 }
 
+/** Las únicas rutas donde un 401 habla de la contraseña y no del token. */
+const CREDENCIALES = ['/auth/login', '/auth/register'];
+
 /** Texto por código, para cuando no hay nada aprovechable en la respuesta. */
 function generico(status: number): string {
+  // Solo llega aquí en /auth/: fuera de ahí, api() trata el 401 como
+  // sesión vencida antes de consultar esta tabla.
   if (status === 401) return 'Correo o contraseña incorrectos.';
   if (status === 403) return 'No tenés permiso para hacer esto.';
   if (status === 404) return 'No encontramos lo que buscabas.';
@@ -111,9 +168,34 @@ function mensajeDeError(payload: unknown, status: number): string {
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
   let res: Response;
 
+  // `fetch` no tiene timeout propio: sin esto, una petición que nunca responde
+  // deja la pantalla en el spinner para siempre.
+  const corte = new AbortController();
+  const temporizador = setTimeout(() => corte.abort(), TIMEOUT_MS);
+
+  // La bandera es imprescindible: sin ella el contador sube cuando salta el
+  // aviso pero no baja nunca, y el mensaje de «despertando» se queda pegado
+  // en pantalla para siempre.
+  let seMarcoLenta = false;
+  const avisoDemora = setTimeout(() => {
+    seMarcoLenta = true;
+    marcarLenta(1);
+  }, DEMORA_MS);
+
+  /** Apaga temporizador y aviso. Se llama una sola vez por petición. */
+  function limpiar() {
+    clearTimeout(temporizador);
+    clearTimeout(avisoDemora);
+    if (seMarcoLenta) {
+      seMarcoLenta = false;
+      marcarLenta(-1);
+    }
+  }
+
   try {
     res = await fetch(`${BASE_URL}${path}`, {
       ...options,
+      signal: corte.signal,
       headers: {
         'Content-Type': 'application/json',
         ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
@@ -121,14 +203,27 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
       },
     });
   } catch {
+    limpiar();
+    // Se distingue el corte por tiempo de la falta de red: son dos problemas
+    // distintos y la persona puede hacer algo distinto con cada uno.
+    if (corte.signal.aborted) {
+      throw new ApiError(
+        'El servidor tardó demasiado en responder. Intentá de nuevo.',
+        0,
+        null,
+      );
+    }
     // fetch solo lanza si no hubo respuesta: sin red, DNS, servidor caído.
-    // El backend en Render duerme, así que la primera petición puede tardar.
     throw new ApiError(
       'No se pudo conectar con el servidor. Revisá tu conexión e intentá de nuevo.',
       0,
       null,
     );
   }
+
+  // Hay respuesta: se apagan el corte por tiempo y el aviso antes de leer el
+  // cuerpo, que ya no puede colgarse.
+  limpiar();
 
   if (!res.ok) {
     let payload: unknown = null;
@@ -137,6 +232,21 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
     } catch {
       payload = await res.text().catch(() => null);
     }
+
+    // Un 401 significa dos cosas muy distintas según dónde ocurra.
+    //
+    // Solo en /auth/login y /auth/register es que la contraseña está mala. En
+    // cualquier otra ruta —incluida /auth/me— es que el token venció: decirle
+    // a la persona que su contraseña es incorrecta mientras mira sus metas es
+    // mentirle, y dejarla ahí sin devolverla al login la deja atrapada.
+    //
+    // Se listan las dos rutas en vez de filtrar por el prefijo /auth/ porque
+    // /auth/me cae de ese lado del prefijo y del otro lado del significado.
+    if (res.status === 401 && !CREDENCIALES.includes(path)) {
+      avisarSesionVencida?.();
+      throw new ApiError('Tu sesión venció. Volvé a entrar.', 401, payload);
+    }
+
     throw new ApiError(mensajeDeError(payload, res.status), res.status, payload);
   }
 

@@ -58,6 +58,9 @@ export default function MovimientosScreen() {
   const [recargando, setRecargando] = useState(false);
   const [trayendoMas, setTrayendoMas] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Un fallo al traer más páginas es distinto del fallo de la carga
+  // inicial: no debe reemplazar la lista, solo avisar al pie.
+  const [errorPagina, setErrorPagina] = useState(false);
 
   const cargar = useCallback(
     async (filtro: TipoMovimiento | undefined, modo: 'inicial' | 'recarga') => {
@@ -91,12 +94,17 @@ export default function MovimientosScreen() {
     // `total` es el conteo con filtros y sin paginar: sirve para saber si falta.
     if (trayendoMas || items.length >= total) return;
     setTrayendoMas(true);
+    setErrorPagina(false);
     try {
       const r = await listarMovimientos({ type: tipo, limit: POR_PAGINA, offset: items.length });
       setItems((previos) => [...previos, ...r.items]);
       setTotal(r.total);
     } catch {
-      // Un fallo al paginar no debe borrar lo que ya se está viendo.
+      // Un fallo al paginar no debe borrar lo que ya se está viendo, pero
+      // tampoco puede quedarse callado: antes la lista simplemente dejaba de
+      // crecer y no había nada en pantalla que lo explicara ni forma de
+      // reintentar salvo recargar todo.
+      setErrorPagina(true);
     } finally {
       setTrayendoMas(false);
     }
@@ -191,6 +199,13 @@ export default function MovimientosScreen() {
           ListFooterComponent={
             trayendoMas ? (
               <ActivityIndicator style={estilos.pie} color={Palette.primario} />
+            ) : errorPagina ? (
+              <View style={estilos.pieError}>
+                <Text style={estilos.pieErrorTexto}>No se pudieron cargar más movimientos.</Text>
+                <Pressable onPress={traerMas} accessibilityRole="button">
+                  <Text style={estilos.accion}>Reintentar</Text>
+                </Pressable>
+              </View>
             ) : null
           }
         />
@@ -265,4 +280,10 @@ const estilos = StyleSheet.create({
   filaDescripcion: { fontSize: FontSize.etiqueta, color: Palette.textoSuave },
   filaMonto: { fontSize: FontSize.subtitulo, fontWeight: '700' },
   pie: { marginVertical: Spacing.three },
+  pieError: { marginVertical: Spacing.three, alignItems: 'center', gap: Spacing.two },
+  pieErrorTexto: {
+    fontSize: FontSize.etiqueta,
+    color: Palette.gasto,
+    textAlign: 'center',
+  },
 });
