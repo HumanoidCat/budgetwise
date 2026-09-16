@@ -10,7 +10,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import type { TotalesCategoria } from '@/api/transactions';
 import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
-import { montoConSimbolo } from '@/lib/formato';
+import { Monto } from '@/components/monto';
 
 const ALTO_BARRA = 10;
 const CUANTAS = 4;
@@ -90,7 +90,7 @@ export function GraficoCategorias({
             />
           </View>
 
-          <Text style={estilos.monto}>{montoConSimbolo(f.monto)}</Text>
+          <Monto cantidad={f.monto} style={estilos.monto} />
         </View>
       ))}
     </View>

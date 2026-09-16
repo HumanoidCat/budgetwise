@@ -23,8 +23,9 @@ import {
   type Movimiento,
   type TipoMovimiento,
 } from '@/api/transactions';
+import { Monto } from '@/components/monto';
 import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
-import { etiquetaFecha, montoConSigno } from '@/lib/formato';
+import { etiquetaFecha } from '@/lib/formato';
 
 const POR_PAGINA = 50;
 
@@ -187,13 +188,7 @@ export default function MovimientosScreen() {
                   </Text>
                 ) : null}
               </View>
-              <Text
-                style={[
-                  estilos.filaMonto,
-                  { color: item.type === 'income' ? Palette.ingreso : Palette.gasto },
-                ]}>
-                {montoConSigno(item.amount, item.type)}
-              </Text>
+              <Monto cantidad={item.amount} tipo={item.type} style={estilos.filaMonto} />
             </Pressable>
           )}
           ListFooterComponent={
@@ -235,7 +230,7 @@ const estilos = StyleSheet.create({
   chip: {
     paddingVertical: Spacing.two,
     paddingHorizontal: Spacing.three,
-    borderRadius: 16,
+    borderRadius: Radius.tarjeta,
     borderWidth: 1,
     borderColor: Palette.borde,
     backgroundColor: Palette.superficie,

@@ -43,7 +43,6 @@ import { ApiError } from '@/api/client';
 import { Campo } from '@/components/form';
 import { Monto } from '@/components/monto';
 import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
-import { montoConSimbolo } from '@/lib/formato';
 
 /** Palabra + color. La palabra va siempre: el color nunca decide solo. */
 const NIVEL: Record<EstadoPresupuesto, { palabra: string; color: string }> = {
@@ -265,7 +264,11 @@ export default function PresupuestosScreen() {
           />
           {edicion.texto ? (
             <Text style={estilos.nota}>
-              {montoConSimbolo(Number(edicion.texto.replace(/[.\s,]/g, '')) || 0)} por mes
+              <Monto
+                cantidad={Number(edicion.texto.replace(/[.\s,]/g, '')) || 0}
+                style={estilos.nota}
+              />{' '}
+              por mes
             </Text>
           ) : null}
           {errorForm ? <Text style={estilos.errorTexto}>{errorForm}</Text> : null}

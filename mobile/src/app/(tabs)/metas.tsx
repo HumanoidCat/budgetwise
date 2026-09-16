@@ -22,7 +22,7 @@ import { ApiError } from '@/api/client';
 import { listarMetas, type Meta } from '@/api/goals';
 import { BarraProgreso } from '@/components/barra-progreso';
 import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
-import { montoConSimbolo } from '@/lib/formato';
+import { Monto } from '@/components/monto';
 
 export default function MetasScreen() {
   const router = useRouter();
@@ -113,7 +113,8 @@ export default function MetasScreen() {
               <BarraProgreso porcentaje={item.progress} />
 
               <Text style={estilos.montos}>
-                {montoConSimbolo(item.saved_amount)} de {montoConSimbolo(item.target_amount)}
+                <Monto cantidad={item.saved_amount} style={estilos.montos} /> de{' '}
+                <Monto cantidad={item.target_amount} style={estilos.montos} />
               </Text>
             </Pressable>
           )}

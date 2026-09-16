@@ -57,7 +57,7 @@ import { Monto } from '@/components/monto';
 import { TarjetaRecomendaciones } from '@/components/tarjeta-recomendaciones';
 import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
 import { useAuth } from '@/context/auth';
-import { mesLargo, montoConSimbolo } from '@/lib/formato';
+import { mesLargo } from '@/lib/formato';
 
 const MESES_SERIE = 6;
 const ALTO_BARRA = 10;
@@ -207,7 +207,8 @@ export default function InicioScreen() {
               <Text style={estilos.heroEtiqueta}>Te queda este mes</Text>
               <Monto cantidad={general.remaining} variante="saldo" style={estilos.heroMonto} />
               <Text style={estilos.heroNota}>
-                de {montoConSimbolo(general.monthly_limit)} presupuestados
+                de <Monto cantidad={general.monthly_limit} style={estilos.heroNota} />{' '}
+                presupuestados
               </Text>
 
               {/* No se reusa <BarraProgreso> a propósito: esa pinta de VERDE

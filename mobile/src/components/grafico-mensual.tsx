@@ -13,6 +13,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import type { TotalesMes } from '@/api/transactions';
 import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
+import { Monto } from '@/components/monto';
 import { etiquetaMes, montoConSimbolo } from '@/lib/formato';
 
 const ALTO = 120;
@@ -68,7 +69,9 @@ export function GraficoMensual({ meses }: { meses: TotalesMes[] }) {
         ))}
       </View>
 
-      <Text style={estilos.escala}>Barra más alta: {montoConSimbolo(tope)}</Text>
+      <Text style={estilos.escala}>
+        Barra más alta: <Monto cantidad={tope} style={estilos.escala} />
+      </Text>
     </View>
   );
 }
