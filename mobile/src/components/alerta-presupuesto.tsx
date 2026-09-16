@@ -26,7 +26,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { obtenerEstadoPresupuestos, type EstadoPresupuesto, type PresupuestoConEstado } from '@/api/budgets';
 import { ApiError } from '@/api/client';
 import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
-import { montoConSimbolo } from '@/lib/formato';
+import { Monto } from '@/components/monto';
 
 /**
  * Palabra y color por estado. La palabra va siempre: una alerta que solo se
@@ -107,7 +107,9 @@ export function AlertaPresupuesto({ alertas: alertasPorProp }: Props = {}) {
             </View>
 
             <Text style={estilos.detalle}>
-              {montoConSimbolo(a.spent)} de {montoConSimbolo(a.monthly_limit)} · {Math.round(a.percent_used)}%
+              <Monto cantidad={a.spent} style={estilos.detalle} /> de{' '}
+              <Monto cantidad={a.monthly_limit} style={estilos.detalle} /> ·{' '}
+              {Math.round(a.percent_used)}%
             </Text>
           </View>
         );

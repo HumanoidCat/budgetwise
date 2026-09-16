@@ -34,8 +34,9 @@ import {
 } from '@/api/goals';
 import { BarraProgreso } from '@/components/barra-progreso';
 import { AvisoError, BotonPrimario, Campo } from '@/components/form';
+import { Monto } from '@/components/monto';
 import { FontSize, Palette, Radius, Spacing } from '@/constants/theme';
-import { fechaValida, montoConSimbolo } from '@/lib/formato';
+import { fechaValida } from '@/lib/formato';
 
 /** Acepta coma o punto como separador decimal. */
 function aNumero(texto: string): number {
@@ -188,12 +189,17 @@ export default function MetaScreen() {
             </View>
             <BarraProgreso porcentaje={meta.progress} />
             <Text style={estilos.montos}>
-              {montoConSimbolo(meta.saved_amount)} de {montoConSimbolo(meta.target_amount)}
+              <Monto cantidad={meta.saved_amount} style={estilos.montos} /> de{' '}
+              <Monto cantidad={meta.target_amount} style={estilos.montos} />
             </Text>
             <Text style={estilos.montos}>
-              {meta.completed
-                ? '¡Meta alcanzada!'
-                : `Faltan ${montoConSimbolo(meta.remaining)}`}
+              {meta.completed ? (
+                '¡Meta alcanzada!'
+              ) : (
+                <>
+                  Faltan <Monto cantidad={meta.remaining} style={estilos.montos} />
+                </>
+              )}
             </Text>
           </View>
         ) : null}

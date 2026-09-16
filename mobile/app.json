@@ -46,6 +46,12 @@
         "projectId": "e7c0b989-1cd9-49a8-808e-a0e14f625b05"
       }
     },
-    "owner": "avmgal"
+    "owner": "avmgal",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e7c0b989-1cd9-49a8-808e-a0e14f625b05"
+    }
   }
 }
