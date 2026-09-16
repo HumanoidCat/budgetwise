@@ -4,3 +4,9 @@
 
 expo-env.d.ts
 # @end expo-cli
+
+# Playwright (HU-15): artefactos de cada corrida, no código.
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
