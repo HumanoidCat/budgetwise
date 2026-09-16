@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { ActivityIndicator, useColorScheme, View } from 'react-native';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import { AvisoDemora } from '@/components/aviso-demora';
 import { AuthProvider, useAuth } from '@/context/auth';
 import { Palette } from '@/constants/theme';
 
@@ -69,6 +70,9 @@ export default function RootLayout() {
       <AuthProvider>
         <AnimatedSplashOverlay />
         <PuertaDeAcceso />
+        {/* Encima de todo y fuera de las pantallas: el aviso tiene que verse
+            también durante la comprobación del token al arrancar. */}
+        <AvisoDemora />
       </AuthProvider>
     </ThemeProvider>
   );

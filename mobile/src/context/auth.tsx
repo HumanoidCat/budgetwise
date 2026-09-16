@@ -17,7 +17,7 @@ import {
   type ReactNode,
 } from 'react';
 
-import { setAuthToken } from '@/api/client';
+import { escucharSesionVencida, setAuthToken } from '@/api/client';
 import { iniciarSesion, registrar, yo, type Usuario } from '@/api/auth';
 import { borrarToken, guardarToken, leerToken } from '@/lib/storage';
 
@@ -98,6 +98,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAuthToken(null);
     setUsuario(null);
   }, []);
+
+  /**
+   * Cierra la sesión sola cuando el backend rechaza el token.
+   *
+   * El token dura 60 minutos. Sin esto, al vencer, la persona se queda dando
+   * vueltas entre pantallas que fallan sin entender por qué ni cómo salir.
+   * Con esto vuelve al login, que es la única acción que arregla el problema.
+   */
+  useEffect(() => {
+    escucharSesionVencida(() => {
+      void salir();
+    });
+    return () => escucharSesionVencida(null);
+  }, [salir]);
 
   const valor = useMemo(
     () => ({ usuario, cargando, entrar, crearCuenta, salir }),
