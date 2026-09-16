@@ -49,6 +49,7 @@ import {
   type Resumen,
 } from '@/api/transactions';
 import { AlertaPresupuesto } from '@/components/alerta-presupuesto';
+import { Asesor } from '@/components/asesor';
 import { GraficoCategorias } from '@/components/grafico-categorias';
 import { GraficoMensual } from '@/components/grafico-mensual';
 import { Marca } from '@/components/marca';
@@ -272,6 +273,11 @@ export default function InicioScreen() {
               <Monto cantidad={resumen.month.expense} tipo="expense" variante="fila" />
             </View>
           </View>
+
+          {/* El asesor va ARRIBA de las recomendaciones a propósito: aquellas
+              hablan sin que les pregunten, esta contesta lo que la persona
+              escribió. Lo que uno pregunta pesa más que lo que le sugieren. */}
+          <Asesor />
 
           <TarjetaRecomendaciones
             recomendaciones={recomendaciones}
