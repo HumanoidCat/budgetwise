@@ -9,7 +9,6 @@ import { Link } from 'expo-router';
 import { useRef, useState } from 'react';
 import {
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -61,27 +60,32 @@ export default function RegistroScreen() {
 
   const scrollRef = useRef<ScrollView>(null);
 
-/**
- * El teclado de Android tapa el botón de enviar.
- *
- * `KeyboardAvoidingView` con `behavior` solo para iOS no hace nada en Android,
- * y aunque la ventana se redimensiona sola (Expo usa `resize` por defecto), el
- * ScrollView no lleva el campo enfocado a la vista: la persona escribe la
- * contraseña sin ver el botón que tiene que tocar después.
- *
- * Al enfocar cualquier campo se desplaza el formulario hasta el final. Los
- * 120 ms son para que el teclado alcance a abrirse y la ventana a
- * redimensionarse: sin esa espera, el scroll ocurre contra la altura vieja y
- * se queda corto.
- */
+  /**
+   * Acompaña al `behavior="padding"` de arriba.
+   *
+   * El padding hace que el contenido supere la altura visible, así que el
+   * ScrollView pasa a ser desplazable; esto lo lleva al final para que el botón
+   * quede a la vista sin que la persona tenga que arrastrar.
+   *
+   * Los 120 ms esperan a que el teclado termine de abrirse: sin esa pausa el
+   * desplazamiento se calcula contra la altura anterior y se queda corto.
+   */
   function alEnfocar() {
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 120);
   }
 
   return (
+    /* `behavior="padding"` en AMBAS plataformas, no solo en iOS.
+       Expo SDK 57 activa edge-to-edge en Android por defecto: la ventana ya
+       no se redimensiona al abrir el teclado, el teclado se dibuja encima. Con
+       `undefined` en Android el componente no hacía nada y el botón quedaba
+       tapado. Con `padding`, KeyboardAvoidingView lee la altura del teclado
+       del evento y agrega ese espacio abajo, que es lo único que funciona
+       cuando la ventana no encoge. */
     <KeyboardAvoidingView
       style={estilos.raiz}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      behavior="padding"
+      keyboardVerticalOffset={0}>
       <ScrollView
         ref={scrollRef}
         contentContainerStyle={estilos.contenido}
