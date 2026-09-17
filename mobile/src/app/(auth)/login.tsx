@@ -3,7 +3,7 @@
  */
 
 import { Link } from 'expo-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -46,11 +46,31 @@ export default function LoginScreen() {
     }
   }
 
+  const scrollRef = useRef<ScrollView>(null);
+
+/**
+ * El teclado de Android tapa el botón de enviar.
+ *
+ * `KeyboardAvoidingView` con `behavior` solo para iOS no hace nada en Android,
+ * y aunque la ventana se redimensiona sola (Expo usa `resize` por defecto), el
+ * ScrollView no lleva el campo enfocado a la vista: la persona escribe la
+ * contraseña sin ver el botón que tiene que tocar después.
+ *
+ * Al enfocar cualquier campo se desplaza el formulario hasta el final. Los
+ * 120 ms son para que el teclado alcance a abrirse y la ventana a
+ * redimensionarse: sin esa espera, el scroll ocurre contra la altura vieja y
+ * se queda corto.
+ */
+  function alEnfocar() {
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 120);
+  }
+
   return (
     <KeyboardAvoidingView
       style={estilos.raiz}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView
+        ref={scrollRef}
         contentContainerStyle={estilos.contenido}
         keyboardShouldPersistTaps="handled">
         <Marca bajada="Ordená tus ingresos y gastos." />
@@ -58,6 +78,7 @@ export default function LoginScreen() {
         <View style={estilos.tarjeta}>
           <Campo
             etiqueta="Correo"
+            onFocus={alEnfocar}
             value={correo}
             onChangeText={setCorreo}
             placeholder="tu@correo.com"
@@ -70,6 +91,7 @@ export default function LoginScreen() {
 
           <Campo
             etiqueta="Contraseña"
+            onFocus={alEnfocar}
             value={clave}
             onChangeText={setClave}
             placeholder="••••••••"
